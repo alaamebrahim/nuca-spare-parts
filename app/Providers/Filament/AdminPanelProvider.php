@@ -62,6 +62,9 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->plugins([
+                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+            ])
             ->defaultAvatarProvider(BoringAvatarsProvider::class)
             ->viteTheme('resources/css/filament/admin/theme.css')
         ;
