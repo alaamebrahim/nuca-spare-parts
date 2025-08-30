@@ -1,0 +1,46 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+:root[dir="rtl"] {
+    --rtl-font-family: Cairo, "Noto Naskh Arabic", Inter, Arial, "Lucida Grande", sans-serif;
+  }
+  
+  html[dir="rtl"],
+  html[dir="rtl"] body {
+    font-family: var(--rtl-font-family), sans-serif;
+  }
+  
+
+
+
+html {
+    font-size: 18px;
+}
+
+* {
+    font-family: "Noto Naskh Arabic", Cairo, tahoma, sans-serif;
+}
+
+.fi-logo {
+    @apply !h-[3.7rem]
+}
+
+.fi-sidebar-item a:hover {
+    @apply bg-gray-50
+}
+
+.fi-topbar nav, .fi-sidebar-header {
+    @apply bg-white shadow-none
+}
+
+.fi-sidebar-group-button {
+    @apply bg-gray-100 dark:bg-[#111111] rounded-md px-10 py-2
+}
+
+.fi-main {
+    max-width: 98%;
+    margin-left: auto;
+    margin-right: auto;
+}

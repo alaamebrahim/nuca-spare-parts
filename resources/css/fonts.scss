@@ -1,0 +1,115 @@
+// Cairo font - using variable font
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 200 1000;
+  font-display: swap;
+  src: url('../../public/fonts/Cairo/Cairo-VariableFont_slnt,wght.ttf') format('truetype-variations');
+}
+
+// Fallback to static fonts for browsers that don't support variable fonts
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url('../../public/fonts/Cairo/static/Cairo-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('../../public/fonts/Cairo/static/Cairo-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../public/fonts/Cairo/static/Cairo-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../public/fonts/Cairo/static/Cairo-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../public/fonts/Cairo/static/Cairo-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../public/fonts/Cairo/static/Cairo-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('../../public/fonts/Cairo/static/Cairo-ExtraBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Cairo';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('../../public/fonts/Cairo/static/Cairo-Black.ttf') format('truetype');
+}
+
+// Noto Naskh Arabic font - using variable font
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('../../public/fonts/Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf') format('truetype-variations');
+}
+
+// Fallback to static fonts
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../../public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../../public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-Bold.ttf') format('truetype');
+}
