@@ -67,6 +67,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->defaultAvatarProvider(BoringAvatarsProvider::class)
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->resourceCreatePageRedirect('index');;
+            ->resourceCreatePageRedirect('index')
+            ->resourceEditPageRedirect('index');
     }
 }

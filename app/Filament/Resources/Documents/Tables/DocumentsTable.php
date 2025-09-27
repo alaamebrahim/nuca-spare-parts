@@ -27,19 +27,27 @@ class DocumentsTable
                     ->limit(200)
                     ->wrap()
                     ->width('40%')
+                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
+                    ->openUrlInNewTab()
                     ->searchable(),
                 TextColumn::make('city.name')
                     ->alignCenter()
                     ->label('المدينة')
+                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
+                    ->openUrlInNewTab()
                     ->sortable(),
                 TextColumn::make('documentType.name')
                     ->alignCenter()
                     ->label('نوع الملف')
+                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
+                    ->openUrlInNewTab()
                     ->badge()
                     ->sortable(),
                 TextColumn::make('document_date')
                     ->date()
                     ->label('تاريخ الملف')
+                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
+                    ->openUrlInNewTab()
                     ->sortable(),
 
             ])
@@ -57,13 +65,14 @@ class DocumentsTable
             ])
             ->recordActions([
                 ActionGroup::make([
+                    EditAction::make(),
+
                     Action::make('view')
                         ->label('عرض')
                         ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
                         ->icon('heroicon-o-eye')
                         ->color('success')
                         ->openUrlInNewTab(),
-                    EditAction::make(),
                     DeleteAction::make(),
                 ])
             ])
