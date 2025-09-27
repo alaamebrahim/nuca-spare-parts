@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Filament\Resources\InstallationOperations\Schemas;
+
+use App\Enums\InstallationStatusEnum;
+use App\Models\City;
+use App\Models\SparePart;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Textarea;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
+
+class InstallationOperationForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                Section::make([
+                    Select::make('spare_part_id')
+                        ->label('قطعة الغيار')
+                        ->options(SparePart::with(['type', 'category'])->get()->mapWithKeys(function ($sparePart) {
+                            return [$sparePart->id => "{$sparePart->type->name} - {$sparePart->category->name} (متاح: {$sparePart->available_quantity})"];
+                        }))
+                        ->searchable()
+                        ->preload()
+                        ->required(),
+                    Select::make('examine_city_id')
+                        ->label('مدينة الفحص')
+                        ->options(City::pluck('name', 'id'))
+                        ->searchable()
+                        ->preload()
+                        ->required(),
+                    Select::make('beneficiary_city_id')
+                        ->label('المدينة المستفيدة')
+                        ->options(City::pluck('name', 'id'))
+                        ->searchable()
+                        ->preload()
+                        ->required(),
+                    TextInput::make('quantity')
+                        ->label('الكمية')
+                        ->numeric()
+                        ->required()
+                        ->minValue(1),
+                    DatePicker::make('installation_date')
+                        ->label('تاريخ التركيب')
+                        ->required()
+                        ->native(false),
+                    Select::make('status')
+                        ->label('الحالة')
+                        ->options(InstallationStatusEnum::labels())
+                        ->required()
+                        ->default(InstallationStatusEnum::Pending->value),
+                    Textarea::make('notes')
+                        ->label('ملاحظات')
+                        ->rows(3),
+                ])->columnSpanFull()
+            ]);
+    }
+}

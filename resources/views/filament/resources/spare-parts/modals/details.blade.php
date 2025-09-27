@@ -128,6 +128,58 @@
     </div>
     @endif
 
+    <!-- Installation Operations -->
+    @if($record->installationOperations->count() > 0)
+    <div class="bg-blue-50 p-4 rounded-lg">
+        <h3 class="text-lg font-semibold text-primary-600 mb-4">عمليات النقل والتركيب</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            مدينة الفحص</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            المدينة المستفيدة</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            الكمية</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            تاريخ التركيب</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            الحالة</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            ملاحظات</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach($record->installationOperations as $operation)
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $operation->examineCity->name
+                            ?? 'غير محدد' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{
+                            $operation->beneficiaryCity->name ?? 'غير محدد' }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{
+                            number_format($operation->quantity) }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{
+                            $operation->installation_date->format('Y-m-d') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                @if($operation->status === 'completed') bg-green-100 text-green-800
+                                @elseif($operation->status === 'in_progress') bg-yellow-100 text-yellow-800
+                                @elseif($operation->status === 'cancelled') bg-red-100 text-red-800
+                                @else bg-gray-100 text-gray-800
+                                @endif">
+                                {{ \App\Enums\InstallationStatusEnum::from($operation->status)->label() }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ $operation->notes ?? '-' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @endif
+
     <!-- Timestamps -->
     <div class="bg-gray-50 p-4 rounded-lg">
         <h3 class="text-lg font-semibold text-primary-600 mb-4">معلومات النظام</h3>

@@ -8,9 +8,16 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Actions\Action;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use App\Models\City;
+use App\Models\InstallationOperation;
 
 class SparePartsTable
 {
@@ -108,6 +115,55 @@ class SparePartsTable
                         ->modalWidth('4xl')
                         ->schema([])
                         ->fillForm([]),
+                    Action::make('install')
+                        ->label('نقل وتركيب')
+                        ->icon('heroicon-o-wrench-screwdriver')
+                        ->color('success')
+                        ->visible(fn($record) => $record->available_quantity > 0)
+                        ->form([
+                            TextInput::make('spare_part_info')
+                                ->label('معلومات القطعة')
+                                ->disabled()
+                                ->default(fn($record) => "نوع: {$record->type->name} | الفئة: {$record->category->name} | الكمية المتاحة: {$record->available_quantity}"),
+                            Select::make('examine_city_id')
+                                ->label('مدينة الفحص')
+                                ->options(City::pluck('name', 'id'))
+                                ->searchable()
+                                ->preload()
+                                ->required(),
+                            Select::make('beneficiary_city_id')
+                                ->label('المدينة المستفيدة')
+                                ->options(City::pluck('name', 'id'))
+                                ->searchable()
+                                ->preload()
+                                ->required(),
+                            TextInput::make('quantity')
+                                ->label('الكمية')
+                                ->numeric()
+                                ->required()
+                                ->minValue(1)
+                                ->maxValue(fn($record) => $record->available_quantity),
+                            DatePicker::make('installation_date')
+                                ->label('تاريخ التركيب')
+                                ->required()
+                                ->native(false),
+                            Textarea::make('notes')
+                                ->label('ملاحظات')
+                                ->rows(3),
+                        ])
+                        ->action(function (array $data, $record) {
+                            InstallationOperation::create([
+                                'spare_part_id' => $record->id,
+                                'examine_city_id' => $data['examine_city_id'],
+                                'beneficiary_city_id' => $data['beneficiary_city_id'],
+                                'quantity' => $data['quantity'],
+                                'installation_date' => $data['installation_date'],
+                                'notes' => $data['notes'],
+                                'status' => 'pending',
+                            ]);
+                        })
+                        ->modalHeading('نقل وتركيب قطع الغيار')
+                        ->modalWidth('2xl'),
                     EditAction::make(),
                 ])
             ])
