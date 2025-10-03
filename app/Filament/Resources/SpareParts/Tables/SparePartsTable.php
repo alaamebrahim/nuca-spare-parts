@@ -145,8 +145,7 @@ class SparePartsTable
                                 ->maxValue(fn($record) => $record->available_quantity),
                             DatePicker::make('installation_date')
                                 ->label('تاريخ التركيب')
-                                ->required()
-                                ->native(false),
+                                ->required(),
                             Textarea::make('notes')
                                 ->label('ملاحظات')
                                 ->rows(3),

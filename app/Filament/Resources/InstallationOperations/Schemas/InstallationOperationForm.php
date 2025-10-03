@@ -43,11 +43,14 @@ class InstallationOperationForm
                         ->label('الكمية')
                         ->numeric()
                         ->required()
-                        ->minValue(1),
+                        ->minValue(1)
+                        ->maxValue(
+                            fn($get) =>
+                            optional(\App\Models\SparePart::find($get('spare_part_id')))->available_quantity ?? null
+                        ),
                     DatePicker::make('installation_date')
                         ->label('تاريخ التركيب')
-                        ->required()
-                        ->native(false),
+                        ->required(),
                     Select::make('status')
                         ->label('الحالة')
                         ->options(InstallationStatusEnum::labels())
