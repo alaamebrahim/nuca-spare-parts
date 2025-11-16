@@ -134,6 +134,17 @@ class DocumentForm
     }
 
     /**
+     * Combine extensions and MIME types for accept list to improve OS dialog filters
+     * and align client-side filtering with server-side validation.
+     */
+    private static function acceptedAcceptList(?int $documentTypeId): array
+    {
+        $exts = self::acceptedTypesForDocumentType($documentTypeId);
+        $mimes = self::acceptedMimeTypesForDocumentType($documentTypeId);
+        return collect(array_merge($exts, $mimes))->unique()->values()->all();
+    }
+
+    /**
      * Create a dynamic Laravel mimes rule from the selected type.
      */
     private static function acceptedMimesRule(?int $documentTypeId): string
@@ -229,10 +240,10 @@ class DocumentForm
             $fields[] = FileUpload::make('file')
                 ->label($def['label'])
                 ->id(fn(UtilitiesGet $get) => $def['idPrefix'] . ($get('document_type_id') ?? 'none'))
-                ->acceptedFileTypes($def['accepted'])
+                ->acceptedFileTypes(fn(UtilitiesGet $get) => self::acceptedAcceptList($get('document_type_id')))
                 ->helperText($def['helper'])
                 ->reactive()
-                ->rules($def['rules'])
+                // ->rules($def['rules'])
                 ->visible(fn(UtilitiesGet $get) => self::matchesTypeCategory($get('document_type_id'), $category))
                 ->directory('documents/' . auth()->id() . '/' . now()->year . '/' . now()->month)
                 ->visibility('public')
@@ -243,7 +254,7 @@ class DocumentForm
         $fields[] = FileUpload::make('file')
             ->label('الملف')
             ->id(fn(UtilitiesGet $get) => 'file-upload-default-' . ($get('document_type_id') ?? 'none'))
-            ->acceptedFileTypes(fn(UtilitiesGet $get) => self::acceptedTypesForDocumentType($get('document_type_id')))
+            ->acceptedFileTypes(fn(UtilitiesGet $get) => self::acceptedAcceptList($get('document_type_id')))
             ->helperText(fn(UtilitiesGet $get) => self::acceptedTypesHint($get('document_type_id')))
             ->reactive()
             ->rules(fn(UtilitiesGet $get) => [
