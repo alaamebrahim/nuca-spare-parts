@@ -13,6 +13,7 @@ class InstallationOperation extends Model
         'beneficiary_city_id',
         'quantity',
         'installation_date',
+        'description',
         'notes',
         'status',
     ];

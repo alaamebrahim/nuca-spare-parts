@@ -128,8 +128,9 @@ class SparePartsTable
                             Select::make('examine_city_id')
                                 ->label('مدينة الفحص')
                                 ->options(City::pluck('name', 'id'))
-                                ->searchable()
-                                ->preload()
+                                ->default(fn($record) => $record->city_id)
+                                ->disabled()
+                                ->dehydrated(false)
                                 ->required(),
                             Select::make('beneficiary_city_id')
                                 ->label('المدينة المستفيدة')
@@ -146,6 +147,9 @@ class SparePartsTable
                             DatePicker::make('installation_date')
                                 ->label('تاريخ التركيب')
                                 ->required(),
+                            Textarea::make('description')
+                                ->label('كيفية الاستفادة')
+                                ->rows(3),
                             Textarea::make('notes')
                                 ->label('ملاحظات')
                                 ->rows(3),
@@ -153,10 +157,12 @@ class SparePartsTable
                         ->action(function (array $data, $record) {
                             InstallationOperation::create([
                                 'spare_part_id' => $record->id,
-                                'examine_city_id' => $data['examine_city_id'],
+                                // Always use the spare part's current city for examine_city_id
+                                'examine_city_id' => $record->city_id,
                                 'beneficiary_city_id' => $data['beneficiary_city_id'],
                                 'quantity' => $data['quantity'],
                                 'installation_date' => $data['installation_date'],
+                                'description' => $data['description'] ?? null,
                                 'notes' => $data['notes'],
                                 'status' => 'pending',
                             ]);
