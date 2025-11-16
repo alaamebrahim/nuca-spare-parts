@@ -55,19 +55,29 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
     {
         return $schema
             ->components([
-                Select::make('spare_part_id')
-                    ->label('المهمة')
-                    ->columnSpan(2)
-                    ->options(SparePart::with(['type', 'category'])->get()
-                        ->mapWithKeys(fn($sparePart) => [
-                            $sparePart->id => $sparePart->type->name . ' - ' . $sparePart->category->name . ' (' . $sparePart->technical_description . ')'
-                        ]))
-                    ->searchable()
-                    ->preload()
-                    ->multiple(),
+                // Move examine city to the beginning and make it live to affect spare_part_id options
                 Select::make('examine_city_id')
                     ->label('مدينة الفحص')
                     ->options(City::pluck('name', 'id'))
+                    ->searchable()
+                    ->preload()
+                    ->multiple()
+                    ->live()
+                    // Clear spare part selection when city filter changes
+                    ->afterStateUpdated(fn($set) => $set('spare_part_id', [])),
+                Select::make('spare_part_id')
+                    ->label('المهمة')
+                    ->columnSpan(2)
+                    ->options(function ($get) {
+                        $cityIds = $get('examine_city_id') ?? [];
+                        return SparePart::query()
+                            ->when(!empty($cityIds), fn($q) => $q->whereIn('city_id', $cityIds))
+                            ->with(['type', 'category'])
+                            ->get()
+                            ->mapWithKeys(fn($sparePart) => [
+                                $sparePart->id => $sparePart->type->name . ' - ' . $sparePart->category->name . ' (' . $sparePart->technical_description . ')'
+                            ]);
+                    })
                     ->searchable()
                     ->preload()
                     ->multiple(),
