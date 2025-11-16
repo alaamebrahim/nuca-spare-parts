@@ -21,7 +21,7 @@ class DashboardOverviewWidget extends Widget
 
         // Sum total maintenance cost: unit maintenance cost * quantity
         $maintenanceTotal = SparePart::query()
-            ->sum(DB::raw('maintenance_cost * quantity'));
+            ->sum(DB::raw('maintenance_cost'));
 
         $savings = $purchaseTotal - $maintenanceTotal;
 
