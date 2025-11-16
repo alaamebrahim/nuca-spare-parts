@@ -4,6 +4,7 @@ namespace App\Filament\Widgets;
 
 use Filament\Widgets\Widget;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Models\SparePart;
 
 class DashboardOverviewWidget extends Widget
@@ -14,11 +15,13 @@ class DashboardOverviewWidget extends Widget
 
     protected function getViewData(): array
     {
+        // Sum total estimated purchase cost: unit cost * quantity
         $purchaseTotal = SparePart::query()
-            ->sum('estimated_cost');
+            ->sum(DB::raw('estimated_cost * quantity'));
 
+        // Sum total maintenance cost: unit maintenance cost * quantity
         $maintenanceTotal = SparePart::query()
-            ->sum('maintenance_cost');
+            ->sum(DB::raw('maintenance_cost * quantity'));
 
         $savings = $purchaseTotal - $maintenanceTotal;
 
