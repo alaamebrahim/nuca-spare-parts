@@ -64,7 +64,7 @@ class SparePartForm
                             }
                         }),
                     TextInput::make('maintenance_cost')
-                        ->label('تكلفة الصيانة للوحدة')
+                        ->label('تكلفة الصيانة ')
                         ->numeric()
                         ->default(0.0)
                         ->visible(fn($get) => $get('status') === 'Maintained'),
