@@ -247,6 +247,7 @@ class DocumentForm
                 ->visible(fn(UtilitiesGet $get) => self::matchesTypeCategory($get('document_type_id'), $category))
                 ->directory('documents/' . auth()->id() . '/' . now()->year . '/' . now()->month)
                 ->visibility('public')
+                ->maxSize(1024 * 1024 * 100)
                 ->required();
         }
 
