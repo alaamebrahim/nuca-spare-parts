@@ -75,7 +75,7 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                             ->with(['type', 'category'])
                             ->get()
                             ->mapWithKeys(fn($sparePart) => [
-                                $sparePart->id => $sparePart->type->name . ' - ' . $sparePart->category->name . ' (' . $sparePart->technical_description . ')'
+                                $sparePart->id => $sparePart->type->name . ' - ' . 'الوصف الفني: ' . $sparePart->technical_description
                             ]);
                     })
                     ->searchable()
@@ -170,7 +170,7 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                     ->label('حالة التركيب')
                     ->formatStateUsing(fn($state) => InstallationStatusEnum::from($state)->label())
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'pending' => 'warning',
                         'in_progress' => 'info',
                         'completed' => 'success',
@@ -245,13 +245,13 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
         }
 
         if (!empty($this->data['spare_part_type_id'])) {
-            $query->whereHas('sparePart', function($q) {
+            $query->whereHas('sparePart', function ($q) {
                 $q->whereIn('type_id', $this->data['spare_part_type_id']);
             });
         }
 
         if (!empty($this->data['spare_part_category_id'])) {
-            $query->whereHas('sparePart', function($q) {
+            $query->whereHas('sparePart', function ($q) {
                 $q->whereIn('category_id', $this->data['spare_part_category_id']);
             });
         }
