@@ -178,6 +178,13 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                         default => 'gray',
                     })
                     ->sortable(),
+                TextColumn::make('description')
+                    ->label('كيفية الاستفادة')
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > 30 ? $state : null;
+                    }),
                 TextColumn::make('notes')
                     ->label('الملاحظات')
                     ->limit(30)
