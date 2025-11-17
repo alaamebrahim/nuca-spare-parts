@@ -30,6 +30,13 @@ class SparePartsTable
                     ->label('نوع المهمة')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('technical_description')
+                    ->label('الوصف الفني')
+                    ->limit(30)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+                        return strlen($state) > 30 ? $state : null;
+                    }),
                 TextColumn::make('category.name')
                     ->label('الفئة')
                     ->alignCenter()
