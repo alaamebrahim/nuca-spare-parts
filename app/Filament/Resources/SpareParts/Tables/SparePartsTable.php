@@ -32,6 +32,7 @@ class SparePartsTable
                     ->sortable(),
                 TextColumn::make('technical_description')
                     ->label('الوصف الفني')
+                    ->searchable()
                     ->limit(30)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
