@@ -71,7 +71,7 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                     ->options(function ($get) {
                         $cityIds = $get('examine_city_id') ?? [];
                         return SparePart::query()
-                            ->when(!empty($cityIds), fn($q) => $q->whereIn('city_id', $cityIds))
+                            ->when(!empty($cityIds), fn($q) => $q->whereIn('city_id', $cityIds)->whereHas('installationOperations', fn($q) => $q->whereIn('examine_city_id', $cityIds)))
                             ->with(['type', 'category'])
                             ->get()
                             ->mapWithKeys(fn($sparePart) => [
