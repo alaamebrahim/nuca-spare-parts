@@ -163,17 +163,15 @@ class SparePartsTable
                                 ->rows(3),
                         ])
                         ->action(function (array $data, $record) {
-                            InstallationOperation::create([
+                            $input = \App\Data\InstallationOperations\CreateInstallationOperationInputData::from([
                                 'spare_part_id' => $record->id,
-                                // Always use the spare part's current city for examine_city_id
-                                'examine_city_id' => $record->city_id,
                                 'beneficiary_city_id' => $data['beneficiary_city_id'],
                                 'quantity' => $data['quantity'],
                                 'installation_date' => $data['installation_date'],
                                 'description' => $data['description'] ?? null,
-                                'notes' => $data['notes'],
-                                'status' => 'pending',
+                                'notes' => $data['notes'] ?? null,
                             ]);
+                            \App\Actions\CreateInstallationOperationAction::run($input);
                         })
                         ->modalHeading('نقل وتركيب قطع الغيار')
                         ->modalWidth('2xl'),

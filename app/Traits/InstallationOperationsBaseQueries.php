@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Traits;
+
+use App\Data\InstallationOperations\InstallationOperationsFilterData;
+use App\Models\InstallationOperation;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
+
+trait InstallationOperationsBaseQueries
+{
+    public static function baseQuery(): Builder
+    {
+        return InstallationOperation::query()->with(['sparePart.type', 'sparePart.category', 'examineCity', 'beneficiaryCity']);
+    }
+
+    public static function filtered(InstallationOperationsFilterData $filters): Builder
+    {
+        $qb = QueryBuilder::for(self::baseQuery())
+            ->allowedFilters([
+                AllowedFilter::exact('spare_part_id'),
+                AllowedFilter::exact('examine_city_id'),
+                AllowedFilter::exact('beneficiary_city_id'),
+                AllowedFilter::exact('status'),
+                AllowedFilter::callback('quantity_from', function ($query, $value) {
+                    $query->where('quantity', '>=', $value);
+                }),
+                AllowedFilter::callback('quantity_to', function ($query, $value) {
+                    $query->where('quantity', '<=', $value);
+                }),
+                AllowedFilter::callback('installation_date_from', function ($query, $value) {
+                    $query->whereDate('installation_date', '>=', $value);
+                }),
+                AllowedFilter::callback('installation_date_to', function ($query, $value) {
+                    $query->whereDate('installation_date', '<=', $value);
+                }),
+                AllowedFilter::callback('created_from', function ($query, $value) {
+                    $query->whereDate('created_at', '>=', $value);
+                }),
+                AllowedFilter::callback('created_to', function ($query, $value) {
+                    $query->whereDate('created_at', '<=', $value);
+                }),
+            ]);
+
+        $params = [];
+        $params['filter'] = [];
+        foreach (['spare_part_id','examine_city_id','beneficiary_city_id','status'] as $key) {
+            if (!empty($filters->{$key})) {
+                $params['filter'][$key] = $filters->{$key};
+            }
+        }
+        foreach ([
+            'quantity_from','quantity_to','installation_date_from','installation_date_to','created_from','created_to',
+        ] as $key) {
+            if (!empty($filters->{$key})) {
+                $params['filter'][$key] = $filters->{$key};
+            }
+        }
+
+        return $qb->setRequest(request()->merge($params))->getEloquentBuilder();
+    }
+}
+

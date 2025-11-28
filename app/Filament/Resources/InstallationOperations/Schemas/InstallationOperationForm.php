@@ -40,13 +40,7 @@ class InstallationOperationForm
                                 ->label('قطعة الغيار')
                                 ->options(function ($get) {
                                     $cityId = $get('examine_city_id');
-                                    return SparePart::query()
-                                        ->when($cityId, fn($q) => $q->where('city_id', $cityId))
-                                        ->with(['type', 'category'])
-                                        ->get()
-                                        ->mapWithKeys(function ($sparePart) {
-                                            return [$sparePart->id => "{$sparePart->type->name} - {$sparePart->category->name} (متاح: {$sparePart->available_quantity})"];
-                                        });
+                                    return \App\DataProcessors\SparePartsDataProcessor::optionsForCity($cityId);
                                 })
                                 ->searchable()
                                 ->preload()
@@ -62,9 +56,7 @@ class InstallationOperationForm
                                 ->numeric()
                                 ->required()
                                 ->minValue(1)
-                                ->maxValue(
-                                    fn($get) => optional(\App\Models\SparePart::find($get('spare_part_id')))->available_quantity ?? null
-                                ),
+                                ->maxValue(fn($get) => optional(\App\Models\SparePart::find($get('spare_part_id')))->available_quantity ?? null),
                             DatePicker::make('installation_date')
                                 ->label('تاريخ التركيب')
                                 ->required(),

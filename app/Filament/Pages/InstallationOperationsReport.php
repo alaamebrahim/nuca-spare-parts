@@ -70,13 +70,7 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                     ->columnSpan(2)
                     ->options(function ($get) {
                         $cityIds = $get('examine_city_id') ?? [];
-                        return SparePart::query()
-                            ->when(!empty($cityIds), fn($q) => $q->whereIn('city_id', $cityIds)->whereHas('installationOperations', fn($q) => $q->whereIn('examine_city_id', $cityIds)))
-                            ->with(['type', 'category'])
-                            ->get()
-                            ->mapWithKeys(fn($sparePart) => [
-                                $sparePart->id => $sparePart->type->name . ' - ' . 'الوصف الفني: ' . $sparePart->technical_description
-                            ]);
+                        return \App\DataProcessors\InstallationOperationsDataProcessor::sparePartOptionsForCities($cityIds);
                     })
                     ->searchable()
                     ->preload()
@@ -206,64 +200,10 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
     protected function getFilteredQuery(): Builder
     {
         if (!$this->showResults) {
-            return InstallationOperation::query()->whereRaw('1 = 0'); // Return empty result
+            return InstallationOperation::query()->whereRaw('1 = 0');
         }
-
-        $query = InstallationOperation::query()->with(['sparePart.type', 'sparePart.category', 'examineCity', 'beneficiaryCity']);
-
-        if (!empty($this->data['spare_part_id'])) {
-            $query->whereIn('spare_part_id', $this->data['spare_part_id']);
-        }
-
-        if (!empty($this->data['examine_city_id'])) {
-            $query->whereIn('examine_city_id', $this->data['examine_city_id']);
-        }
-
-        if (!empty($this->data['beneficiary_city_id'])) {
-            $query->whereIn('beneficiary_city_id', $this->data['beneficiary_city_id']);
-        }
-
-        if (!empty($this->data['status'])) {
-            $query->whereIn('status', $this->data['status']);
-        }
-
-        if (!empty($this->data['quantity_from'])) {
-            $query->where('quantity', '>=', $this->data['quantity_from']);
-        }
-
-        if (!empty($this->data['quantity_to'])) {
-            $query->where('quantity', '<=', $this->data['quantity_to']);
-        }
-
-        if (!empty($this->data['installation_date_from'])) {
-            $query->whereDate('installation_date', '>=', $this->data['installation_date_from']);
-        }
-
-        if (!empty($this->data['installation_date_to'])) {
-            $query->whereDate('installation_date', '<=', $this->data['installation_date_to']);
-        }
-
-        if (!empty($this->data['created_from'])) {
-            $query->whereDate('created_at', '>=', $this->data['created_from']);
-        }
-
-        if (!empty($this->data['created_to'])) {
-            $query->whereDate('created_at', '<=', $this->data['created_to']);
-        }
-
-        if (!empty($this->data['spare_part_type_id'])) {
-            $query->whereHas('sparePart', function ($q) {
-                $q->whereIn('type_id', $this->data['spare_part_type_id']);
-            });
-        }
-
-        if (!empty($this->data['spare_part_category_id'])) {
-            $query->whereHas('sparePart', function ($q) {
-                $q->whereIn('category_id', $this->data['spare_part_category_id']);
-            });
-        }
-
-        return $query;
+        $filters = \App\Data\InstallationOperations\InstallationOperationsFilterData::from($this->data ?? []);
+        return \App\Traits\InstallationOperationsBaseQueries::filtered($filters);
     }
 
     protected function getHeaderActions(): array

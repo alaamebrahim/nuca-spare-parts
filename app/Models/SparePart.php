@@ -8,7 +8,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SparePart extends Model
 {
-    //
+    protected $fillable = [
+        'city_id',
+        'type_id',
+        'category_id',
+        'location',
+        'technical_description',
+        'quantity',
+        'status',
+        'estimated_cost',
+        'maintenance_cost',
+        'maintenance_city_id',
+    ];
 
     public function city(): BelongsTo
     {

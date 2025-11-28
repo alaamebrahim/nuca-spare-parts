@@ -167,7 +167,7 @@ class SparePartsReport extends Page implements HasTable, HasForms
                     ->alignCenter(),
                 TextColumn::make('total_cost')
                     ->label('إجمالي التكلفة')
-                    ->getStateUsing(fn(SparePart $record) => $record->quantity * $record->estimated_cost)
+                    ->getStateUsing(fn(SparePart $record) => \App\DataProcessors\SparePartsDataProcessor::estimatedTotal($record))
                     ->sortable()
                     ->alignCenter(),
                 TextColumn::make('maintenance_cost')
@@ -180,7 +180,7 @@ class SparePartsReport extends Page implements HasTable, HasForms
                     ->searchable(),
                 TextColumn::make('total_maintenance_cost')
                     ->label('إجمالي تكلفة الصيانة')
-                    ->getStateUsing(fn(SparePart $record) => $record->quantity * $record->maintenance_cost)
+                    ->getStateUsing(fn(SparePart $record) => \App\DataProcessors\SparePartsDataProcessor::maintenanceTotal($record))
                     ->sortable()
                     ->alignCenter(),
                 TextColumn::make('created_at')
@@ -197,64 +197,10 @@ class SparePartsReport extends Page implements HasTable, HasForms
     protected function getFilteredQuery(): Builder
     {
         if (!$this->showResults) {
-            return SparePart::query()->whereRaw('1 = 0'); // Return empty result
+            return SparePart::query()->whereRaw('1 = 0');
         }
-
-        $query = SparePart::query()->with(['city', 'type', 'category', 'maintenanceCity']);
-
-        if (!empty($this->data['city_id'])) {
-            $query->whereIn('city_id', $this->data['city_id']);
-        }
-
-        if (!empty($this->data['type_id'])) {
-            $query->whereIn('type_id', $this->data['type_id']);
-        }
-
-        if (!empty($this->data['category_id'])) {
-            $query->whereIn('category_id', $this->data['category_id']);
-        }
-
-        if (!empty($this->data['status'])) {
-            $query->whereIn('status', $this->data['status']);
-        }
-
-        if (!empty($this->data['quantity_from'])) {
-            $query->where('quantity', '>=', $this->data['quantity_from']);
-        }
-
-        if (!empty($this->data['quantity_to'])) {
-            $query->where('quantity', '<=', $this->data['quantity_to']);
-        }
-
-        if (!empty($this->data['cost_from'])) {
-            $query->where('estimated_cost', '>=', $this->data['cost_from']);
-        }
-
-        if (!empty($this->data['cost_to'])) {
-            $query->where('estimated_cost', '<=', $this->data['cost_to']);
-        }
-
-        if (!empty($this->data['created_from'])) {
-            $query->whereDate('created_at', '>=', $this->data['created_from']);
-        }
-
-        if (!empty($this->data['created_to'])) {
-            $query->whereDate('created_at', '<=', $this->data['created_to']);
-        }
-
-        if (!empty($this->data['maintenance_city_id'])) {
-            $query->whereIn('maintenance_city_id', $this->data['maintenance_city_id']);
-        }
-
-        if (!empty($this->data['maintenance_cost_from'])) {
-            $query->where('maintenance_cost', '>=', $this->data['maintenance_cost_from']);
-        }
-
-        if (!empty($this->data['maintenance_cost_to'])) {
-            $query->where('maintenance_cost', '<=', $this->data['maintenance_cost_to']);
-        }
-
-        return $query;
+        $filters = \App\Data\SpareParts\SparePartsReportFilterData::from($this->data ?? []);
+        return \App\Traits\SparePartsBaseQueries::filtered($filters);
     }
 
     protected function getHeaderActions(): array
