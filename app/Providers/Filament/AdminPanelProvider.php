@@ -35,7 +35,6 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->brandName('بيانات بيت الوطن')
             ->brandLogo(URL::to('img/logo1.png'))
-            ->font(family: 'Cairo', url: URL::to('fonts/Cairo-Regular.ttf'), provider: LocalFontProvider::class)
             ->favicon(URL::to('img/logo.png'))
             ->login()
             ->colors([
