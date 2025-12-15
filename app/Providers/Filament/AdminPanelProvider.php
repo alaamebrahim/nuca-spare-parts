@@ -33,7 +33,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->spa()
-            ->brandName('بيانات بيت الوطن')
+            ->brandName('متابعة بيانات المهمات')
             ->brandLogo(URL::to('img/logo1.png'))
             ->favicon(URL::to('img/logo.png'))
             ->login()

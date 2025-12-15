@@ -49,3 +49,19 @@ html {
     font-size: 1.1rem;
     color: var(--color-secondary-500);
 }
+
+ .stat-card {
+        @apply flex items-start gap-4 p-5 bg-white rounded-xl border border-gray-100 shadow-sm;
+    }
+    .stat-icon {
+        @apply h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0;
+    }
+    .stat-content {
+        @apply flex-1 min-w-0;
+    }
+    .stat-label {
+        @apply text-sm text-gray-500 leading-tight;
+    }
+    .stat-value {
+        @apply mt-1 text-2xl font-semibold whitespace-nowrap overflow-hidden text-ellipsis tabular-nums text-right;
+    }
