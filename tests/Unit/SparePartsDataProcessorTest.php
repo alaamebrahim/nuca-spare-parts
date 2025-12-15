@@ -40,4 +40,3 @@ it('provides option labels with available quantity', function () {
         ->and($label)->toContain('Cat')
         ->and($label)->toContain('متاح:');
 });
-
