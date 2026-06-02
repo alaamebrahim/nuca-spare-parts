@@ -3,26 +3,24 @@
 namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\BoringAvatarsProvider;
+use App\Filament\Pages\Dashboard;
+use App\Filament\Widgets\DashboardClockWidget;
+use App\Filament\Widgets\DashboardOverviewWidget;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use App\Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
-use Filament\Widgets\FilamentInfoWidget;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Illuminate\Support\Facades\URL;
-use Filament\FontProviders\LocalFontProvider;
-use App\Filament\Widgets\DashboardOverviewWidget;
-use App\Filament\Widgets\DashboardClockWidget;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -35,12 +33,12 @@ class AdminPanelProvider extends PanelProvider
             ->spa()
             ->darkMode(false)
             ->brandName('متابعة بيانات المهمات')
-            ->brandLogo(URL::to('img/logo1.png'))
+            ->brandLogo(URL::to('img/logo3.png'))
             ->favicon(URL::to('img/logo.png'))
             ->login()
             ->colors([
-                'primary' => Color::Amber,
-                'secondary' => Color::Green,
+                'primary' => Color::hex('#546024'),
+                'secondary' => Color::hex('#C89A26'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
