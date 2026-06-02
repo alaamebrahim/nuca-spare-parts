@@ -5,18 +5,22 @@
 
 :root[dir="rtl"] {
     --rtl-font-family: Cairo, "Noto Naskh Arabic", Inter, Arial, "Lucida Grande", sans-serif;
-  }
-  
-  html[dir="rtl"],
-  html[dir="rtl"] body {
+}
+
+:root {
+    --sidebar-width: 300px !important;
+}
+
+html[dir="rtl"],
+html[dir="rtl"] body {
     font-family: var(--rtl-font-family), sans-serif;
-  }
-  
+}
+
 
 
 
 html {
-    font-size: 18px;
+    font-size: 17px;
 }
 
 * {
@@ -54,18 +58,22 @@ html {
     @apply bg-red-50 text-red-700 font-semibold;
 }
 
- .stat-card {
-        @apply flex items-start gap-4 p-5 bg-white rounded-xl border border-gray-100 shadow-sm;
-    }
-    .stat-icon {
-        @apply h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0;
-    }
-    .stat-content {
-        @apply flex-1 min-w-0;
-    }
-    .stat-label {
-        @apply text-sm text-gray-500 leading-tight;
-    }
-    .stat-value {
-        @apply mt-1 text-2xl font-semibold whitespace-nowrap overflow-hidden text-ellipsis tabular-nums text-right;
-    }
+.stat-card {
+    @apply flex items-start gap-4 p-5 bg-white rounded-xl border border-gray-100 shadow-sm;
+}
+
+.stat-icon {
+    @apply h-10 w-10 rounded-full flex items-center justify-center flex-shrink-0;
+}
+
+.stat-content {
+    @apply flex-1 min-w-0;
+}
+
+.stat-label {
+    @apply text-sm text-gray-500 leading-tight;
+}
+
+.stat-value {
+    @apply mt-1 text-2xl font-semibold whitespace-nowrap overflow-hidden text-ellipsis tabular-nums text-right;
+}
