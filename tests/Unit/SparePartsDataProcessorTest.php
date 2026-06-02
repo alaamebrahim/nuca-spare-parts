@@ -19,8 +19,8 @@ it('computes totals correctly', function () {
         'maintenance_cost' => 2,
     ]);
 
-    expect(SparePartsDataProcessor::estimatedTotal($sp))->toBe(30.0);
-    expect(SparePartsDataProcessor::maintenanceTotal($sp))->toBe(6.0);
+    expect(SparePartsDataProcessor::estimatedTotal($sp))->toBe(30);
+    expect(SparePartsDataProcessor::maintenanceTotal($sp))->toBe(6);
 });
 
 it('provides option labels with available quantity', function () {

@@ -1,0 +1,80 @@
+{
+  "public/fonts/Cairo/Cairo-VariableFont_slnt,wght.ttf": {
+    "file": "assets/Cairo-VariableFont_slnt_wght-4A3BC3p8.ttf",
+    "src": "public/fonts/Cairo/Cairo-VariableFont_slnt,wght.ttf"
+  },
+  "public/fonts/Cairo/static/Cairo-Black.ttf": {
+    "file": "assets/Cairo-Black-CiPMz1rI.ttf",
+    "src": "public/fonts/Cairo/static/Cairo-Black.ttf"
+  },
+  "public/fonts/Cairo/static/Cairo-Bold.ttf": {
+    "file": "assets/Cairo-Bold-I2ZtaFuO.ttf",
+    "src": "public/fonts/Cairo/static/Cairo-Bold.ttf"
+  },
+  "public/fonts/Cairo/static/Cairo-ExtraBold.ttf": {
+    "file": "assets/Cairo-ExtraBold-DYTTxaco.ttf",
+    "src": "public/fonts/Cairo/static/Cairo-ExtraBold.ttf"
+  },
+  "public/fonts/Cairo/static/Cairo-ExtraLight.ttf": {
+    "file": "assets/Cairo-ExtraLight-CIOx8Y0E.ttf",
+    "src": "public/fonts/Cairo/static/Cairo-ExtraLight.ttf"
+  },
+  "public/fonts/Cairo/static/Cairo-Light.ttf": {
+    "file": "assets/Cairo-Light-CB4yp-7N.ttf",
+    "src": "public/fonts/Cairo/static/Cairo-Light.ttf"
+  },
+  "public/fonts/Cairo/static/Cairo-Medium.ttf": {
+    "file": "assets/Cairo-Medium-BS5LWzLe.ttf",
+    "src": "public/fonts/Cairo/static/Cairo-Medium.ttf"
+  },
+  "public/fonts/Cairo/static/Cairo-Regular.ttf": {
+    "file": "assets/Cairo-Regular-Cpd_OyVR.ttf",
+    "src": "public/fonts/Cairo/static/Cairo-Regular.ttf"
+  },
+  "public/fonts/Cairo/static/Cairo-SemiBold.ttf": {
+    "file": "assets/Cairo-SemiBold-LwFphzwy.ttf",
+    "src": "public/fonts/Cairo/static/Cairo-SemiBold.ttf"
+  },
+  "public/fonts/Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf": {
+    "file": "assets/NotoNaskhArabic-VariableFont_wght-BH1QYxN_.ttf",
+    "src": "public/fonts/Noto_Naskh_Arabic/NotoNaskhArabic-VariableFont_wght.ttf"
+  },
+  "public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-Bold.ttf": {
+    "file": "assets/NotoNaskhArabic-Bold-Bl8Tx1PB.ttf",
+    "src": "public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-Bold.ttf"
+  },
+  "public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-Medium.ttf": {
+    "file": "assets/NotoNaskhArabic-Medium-CN0Zi9lk.ttf",
+    "src": "public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-Medium.ttf"
+  },
+  "public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-Regular.ttf": {
+    "file": "assets/NotoNaskhArabic-Regular-ChuMebMj.ttf",
+    "src": "public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-Regular.ttf"
+  },
+  "public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-SemiBold.ttf": {
+    "file": "assets/NotoNaskhArabic-SemiBold-DeiT6Q5W.ttf",
+    "src": "public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-SemiBold.ttf"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-B-JO847d.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-BWCKoafH.css",
+    "src": "resources/css/filament/admin/theme.css",
+    "isEntry": true,
+    "names": [
+      "theme.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C0G0cght.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
