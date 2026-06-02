@@ -12,7 +12,6 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
 
 class DocumentsTable
 {
@@ -27,26 +26,26 @@ class DocumentsTable
                     ->limit(200)
                     ->wrap()
                     ->width('40%')
-                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
+                    ->url(fn (Document $record): ?string => $record->fileUrl())
                     ->openUrlInNewTab()
                     ->searchable(),
                 TextColumn::make('city.name')
                     ->alignCenter()
                     ->label('المدينة')
-                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
+                    ->url(fn (Document $record): ?string => $record->fileUrl())
                     ->openUrlInNewTab()
                     ->sortable(),
                 TextColumn::make('documentType.name')
                     ->alignCenter()
                     ->label('نوع الملف')
-                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
+                    ->url(fn (Document $record): ?string => $record->fileUrl())
                     ->openUrlInNewTab()
                     ->badge()
                     ->sortable(),
                 TextColumn::make('document_date')
                     ->date()
                     ->label('تاريخ الملف')
-                    ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
+                    ->url(fn (Document $record): ?string => $record->fileUrl())
                     ->openUrlInNewTab()
                     ->sortable(),
 
@@ -69,12 +68,12 @@ class DocumentsTable
 
                     Action::make('view')
                         ->label('عرض')
-                        ->url(fn(Document $record): string => Storage::disk('public')->url($record->file))
+                        ->url(fn (Document $record): ?string => $record->fileUrl())
                         ->icon('heroicon-o-eye')
                         ->color('success')
                         ->openUrlInNewTab(),
                     DeleteAction::make(),
-                ])
+                ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Documents\Schemas;
 
 use App\Models\DocumentType;
-use Filament\Forms\Get;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -42,9 +41,8 @@ class DocumentForm
                         ->default(1)
                         ->live()
                         // Reset the uploaded file when type changes to avoid stale validation
-                        ->afterStateUpdated(fn(UtilitiesSet $set) => $set('file', null))
+                        ->afterStateUpdated(fn (UtilitiesSet $set) => $set('file', null))
                         ->required(),
-
 
                 ], self::uploadFieldComponents(), [
                     Textarea::make('notes')
@@ -52,7 +50,7 @@ class DocumentForm
                         ->default(null)
                         ->columnSpanFull(),
                 ]))
-                    ->columns(1)->columnSpanFull()
+                    ->columns(1)->columnSpanFull(),
             ]);
     }
 
@@ -112,6 +110,7 @@ class DocumentForm
         // Map extensions to labels for a user-friendly hint
         $exts = collect($types)->map(function ($ext) {
             $e = ltrim(mb_strtolower($ext), '.');
+
             return match ($e) {
                 'pdf' => 'PDF',
                 'doc' => 'DOC',
@@ -130,7 +129,7 @@ class DocumentForm
             };
         })->unique()->implode(', ');
 
-        return 'الملفات المسموحة: ' . $exts;
+        return 'الملفات المسموحة: '.$exts;
     }
 
     /**
@@ -141,6 +140,7 @@ class DocumentForm
     {
         $exts = self::acceptedTypesForDocumentType($documentTypeId);
         $mimes = self::acceptedMimeTypesForDocumentType($documentTypeId);
+
         return collect(array_merge($exts, $mimes))->unique()->values()->all();
     }
 
@@ -150,7 +150,7 @@ class DocumentForm
     private static function acceptedMimesRule(?int $documentTypeId): string
     {
         $exts = collect(self::acceptedTypesForDocumentType($documentTypeId))
-            ->map(fn($ext) => ltrim(mb_strtolower($ext), '.'))
+            ->map(fn ($ext) => ltrim(mb_strtolower($ext), '.'))
             ->unique()
             ->implode(',');
 
@@ -158,7 +158,7 @@ class DocumentForm
             $exts = 'pdf,doc,docx,xls,xlsx,csv,jpg,jpeg,png,webp';
         }
 
-        return 'mimes:' . $exts;
+        return 'mimes:'.$exts;
     }
 
     /**
@@ -174,7 +174,7 @@ class DocumentForm
             $mimes = 'application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv,image/jpeg,image/png,image/webp,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation';
         }
 
-        return 'mimetypes:' . $mimes;
+        return 'mimetypes:'.$mimes;
     }
 
     /**
@@ -237,35 +237,34 @@ class DocumentForm
         $fields = [];
 
         foreach ($defs as $category => $def) {
-            $fields[] = FileUpload::make('file')
-                ->label($def['label'])
-                ->id(fn(UtilitiesGet $get) => $def['idPrefix'] . ($get('document_type_id') ?? 'none'))
-                ->acceptedFileTypes(fn(UtilitiesGet $get) => self::acceptedAcceptList($get('document_type_id')))
-                ->helperText($def['helper'])
-                ->reactive()
-                // ->rules($def['rules'])
-                ->visible(fn(UtilitiesGet $get) => self::matchesTypeCategory($get('document_type_id'), $category))
-                ->directory('documents/' . auth()->id() . '/' . now()->year . '/' . now()->month)
-                ->visibility('public')
-                ->maxSize(1024 * 1024 * 100)
-                ->required();
+            $fields[] = self::configureFileUpload(
+                FileUpload::make('file')
+                    ->label($def['label'])
+                    ->id(fn (UtilitiesGet $get) => $def['idPrefix'].($get('document_type_id') ?? 'none'))
+                    ->acceptedFileTypes(fn (UtilitiesGet $get) => self::acceptedAcceptList($get('document_type_id')))
+                    ->helperText($def['helper'])
+                    ->reactive()
+                    ->visible(fn (UtilitiesGet $get) => self::matchesTypeCategory($get('document_type_id'), $category))
+                    ->maxSize(1024 * 1024 * 100)
+                    ->required()
+            );
         }
 
         // Fallback Upload when type name is unknown
-        $fields[] = FileUpload::make('file')
-            ->label('الملف')
-            ->id(fn(UtilitiesGet $get) => 'file-upload-default-' . ($get('document_type_id') ?? 'none'))
-            ->acceptedFileTypes(fn(UtilitiesGet $get) => self::acceptedAcceptList($get('document_type_id')))
-            ->helperText(fn(UtilitiesGet $get) => self::acceptedTypesHint($get('document_type_id')))
-            ->reactive()
-            ->rules(fn(UtilitiesGet $get) => [
-                self::acceptedMimesRule($get('document_type_id')),
-                self::acceptedMimeTypesRule($get('document_type_id')),
-            ])
-            ->visible(fn(UtilitiesGet $get) => self::isUnknownType($get('document_type_id')))
-            ->directory('documents/' . auth()->id() . '/' . now()->year . '/' . now()->month)
-            ->visibility('public')
-            ->required();
+        $fields[] = self::configureFileUpload(
+            FileUpload::make('file')
+                ->label('الملف')
+                ->id(fn (UtilitiesGet $get) => 'file-upload-default-'.($get('document_type_id') ?? 'none'))
+                ->acceptedFileTypes(fn (UtilitiesGet $get) => self::acceptedAcceptList($get('document_type_id')))
+                ->helperText(fn (UtilitiesGet $get) => self::acceptedTypesHint($get('document_type_id')))
+                ->reactive()
+                ->rules(fn (UtilitiesGet $get) => [
+                    self::acceptedMimesRule($get('document_type_id')),
+                    self::acceptedMimeTypesRule($get('document_type_id')),
+                ])
+                ->visible(fn (UtilitiesGet $get) => self::isUnknownType($get('document_type_id')))
+                ->required()
+        );
 
         return $fields;
     }
@@ -338,6 +337,7 @@ class DocumentForm
     private static function matchesTypeCategory(?int $documentTypeId, string $category): bool
     {
         $name = mb_strtolower(optional(DocumentType::find($documentTypeId))->name ?? '');
+
         return match ($category) {
             'pdf' => $name !== '' && (str_contains($name, 'pdf') || str_contains($name, 'بي دي اف')),
             'word' => $name !== '' && (str_contains($name, 'word') || str_contains($name, 'وورد')),
@@ -350,13 +350,22 @@ class DocumentForm
         };
     }
 
+    private static function configureFileUpload(FileUpload $field): FileUpload
+    {
+        return $field
+            ->disk(config('filesystems.documents_disk', 'r2'))
+            ->directory('documents/'.auth()->id().'/'.now()->year.'/'.now()->month)
+            ->visibility('public');
+    }
+
     private static function isUnknownType(?int $documentTypeId): bool
     {
         if ($documentTypeId === null) {
             return true;
         }
         $name = mb_strtolower(optional(DocumentType::find($documentTypeId))->name ?? '');
-        return !(
+
+        return ! (
             str_contains($name, 'pdf') || str_contains($name, 'بي دي اف') ||
             str_contains($name, 'word') || str_contains($name, 'وورد') ||
             str_contains($name, 'excel') || str_contains($name, 'اكسل') ||
