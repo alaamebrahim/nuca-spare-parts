@@ -50,6 +50,10 @@ html {
     color: var(--color-secondary-500);
 }
 
+.import-cell-error {
+    @apply bg-red-50 text-red-700 font-semibold;
+}
+
  .stat-card {
         @apply flex items-start gap-4 p-5 bg-white rounded-xl border border-gray-100 shadow-sm;
     }

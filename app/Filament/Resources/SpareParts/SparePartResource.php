@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SpareParts;
 
 use App\Filament\Resources\SpareParts\Pages\CreateSparePart;
 use App\Filament\Resources\SpareParts\Pages\EditSparePart;
+use App\Filament\Resources\SpareParts\Pages\MassImportSpareParts;
 use App\Filament\Resources\SpareParts\Pages\ListSpareParts;
 use App\Filament\Resources\SpareParts\Schemas\SparePartForm;
 use App\Filament\Resources\SpareParts\Tables\SparePartsTable;
@@ -49,6 +50,7 @@ class SparePartResource extends Resource
             'index' => ListSpareParts::route('/'),
             'create' => CreateSparePart::route('/create'),
             'edit' => EditSparePart::route('/{record}/edit'),
+            'import' => MassImportSpareParts::route('/import'),
         ];
     }
 }
