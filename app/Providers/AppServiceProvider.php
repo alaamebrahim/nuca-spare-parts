@@ -23,14 +23,31 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if ($this->app->environment('production') || str_starts_with((string) config('app.url'), 'https://')) {
-            URL::forceScheme('https');
-        }
+        $this->configureUrlForProduction();
 
         Model::unguard();
         $this->app->setLocale('ar');
 
         $this->makeFilamentUseTranslatedValidationMessages();
+    }
+
+    /**
+     * Behind HTTPS reverse proxies, request()->root() may be http:// while links use https://.
+     * Filament SPA only adds wire:navigate when URLs match request()->root() (is_app_url).
+     */
+    private function configureUrlForProduction(): void
+    {
+        if (! $this->app->environment('production') && ! str_starts_with((string) config('app.url'), 'https://')) {
+            return;
+        }
+
+        $appUrl = rtrim((string) config('app.url'), '/');
+
+        if ($appUrl !== '') {
+            URL::forceRootUrl($appUrl);
+        }
+
+        URL::forceScheme('https');
     }
 
     private function makeFilamentUseTranslatedValidationMessages(): void
