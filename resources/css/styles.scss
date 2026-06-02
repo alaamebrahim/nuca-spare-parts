@@ -1,0 +1,17 @@
+@use "./fonts.scss";
+
+@config "./../../tailwind.config.js";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root[dir="rtl"] {
+  --rtl-font-family: Cairo, "Noto Naskh Arabic", Inter, Arial, "Lucida Grande", sans-serif;
+}
+
+html[dir="rtl"],
+html[dir="rtl"] body {
+  font-family: var(--rtl-font-family), sans-serif;
+}
