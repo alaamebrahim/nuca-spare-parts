@@ -5,6 +5,7 @@ namespace App\Providers;
 use Filament\Forms\Components\Field;
 use Filament\Support\Facades\FilamentView;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if ($this->app->environment('production') || str_starts_with((string) config('app.url'), 'https://')) {
+            URL::forceScheme('https');
+        }
 
         Model::unguard();
         $this->app->setLocale('ar');
@@ -34,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         // Make Filament use translated validation messages
         FilamentView::registerRenderHook(
             'panels::body.start',
-            fn() => '<script>window.filamentData = window.filamentData || {}; window.filamentData.locale = "ar";</script>'
+            fn () => '<script>window.filamentData = window.filamentData || {}; window.filamentData.locale = "ar";</script>'
         );
 
         // Configure fields to translate labels and use custom validation messages
