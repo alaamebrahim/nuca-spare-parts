@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f88b17374be05f4ec139686cc8bc27b",
+    "content-hash": "11b3d2c78f33c75be21beb45d274051d",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -603,8 +603,6 @@
             "time": "2024-07-16T11:13:48+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "composer/pcre",
             "version": "3.3.2",
             "source": {
@@ -761,7 +759,6 @@
             "time": "2025-08-20T19:15:30+00:00"
         },
         {
->>>>>>> master
             "name": "danharrin/date-format-converter",
             "version": "v0.3.1",
             "source": {
@@ -1289,8 +1286,6 @@
             "time": "2025-03-06T22:45:56+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "ezyang/htmlpurifier",
             "version": "v4.19.0",
             "source": {
@@ -1352,7 +1347,6 @@
             "time": "2025-10-17T16:34:55+00:00"
         },
         {
->>>>>>> master
             "name": "filament/actions",
             "version": "v4.0.4",
             "source": {
@@ -3650,8 +3644,6 @@
             "time": "2025-07-17T05:12:15+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "maatwebsite/excel",
             "version": "3.1.69",
             "source": {
@@ -3918,7 +3910,6 @@
             "time": "2022-12-02T22:17:43+00:00"
         },
         {
->>>>>>> master
             "name": "masterminds/html5",
             "version": "2.10.0",
             "source": {
@@ -4969,8 +4960,6 @@
             "time": "2024-11-09T15:12:26+00:00"
         },
         {
-<<<<<<< HEAD
-=======
             "name": "phpoffice/phpspreadsheet",
             "version": "1.30.5",
             "source": {
@@ -5079,7 +5068,6 @@
             "time": "2026-05-31T05:13:11+00:00"
         },
         {
->>>>>>> master
             "name": "phpoption/phpoption",
             "version": "1.9.4",
             "source": {
@@ -12666,21 +12654,12 @@
     ],
     "aliases": [],
     "minimum-stability": "beta",
-<<<<<<< HEAD
-    "stability-flags": [],
-=======
     "stability-flags": {},
->>>>>>> master
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.2"
     },
-<<<<<<< HEAD
-    "platform-dev": [],
-    "plugin-api-version": "2.6.0"
-=======
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
->>>>>>> master
 }
