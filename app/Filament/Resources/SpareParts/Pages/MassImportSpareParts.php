@@ -2,11 +2,12 @@
 
 namespace App\Filament\Resources\SpareParts\Pages;
 
-use App\Actions\SpareParts\StageSparePartImportBatchAction;
 use App\Actions\SpareParts\SaveSparePartImportBatchAction;
+use App\Actions\SpareParts\StageSparePartImportBatchAction;
 use App\DataProcessors\SparePartImportRowsDataProcessor;
-use App\Filament\Resources\SpareParts\SparePartResource;
 use App\Exports\SparePartsImportTemplateExport;
+use App\Filament\Resources\SpareParts\Schemas\SparePartForm;
+use App\Filament\Resources\SpareParts\SparePartResource;
 use App\Models\City;
 use App\Models\SparePartCategory;
 use App\Models\SparePartImportBatch;
@@ -17,18 +18,18 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\Page;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Filament\Resources\Pages\Page;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Throwable;
 
 class MassImportSpareParts extends Page implements HasForms, HasTable
@@ -201,6 +202,9 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
         $cityOptions = City::query()->orderBy('name')->pluck('name', 'id')->all();
         $typeOptions = SparePartType::query()->orderBy('name')->pluck('name', 'id')->all();
         $categoryOptions = SparePartCategory::query()->orderBy('name')->pluck('name', 'id')->all();
+        $cityOptionLabel = fn (mixed $value): ?string => blank($value) ? 'اختر مدينة' : ($cityOptions[$value] ?? null);
+        $typeOptionLabel = fn (mixed $value): ?string => blank($value) ? 'اختر نوع' : ($typeOptions[$value] ?? null);
+        $categoryOptionLabel = fn (mixed $value): ?string => blank($value) ? 'اختر فئة' : ($categoryOptions[$value] ?? null);
 
         return $table
             ->query($this->getRowsQuery())
@@ -211,6 +215,7 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
                 SelectColumn::make('city_id')
                     ->label('المدينة (من النظام)')
                     ->options($cityOptions)
+                    ->getOptionLabelUsing($cityOptionLabel)
                     ->searchableOptions()
                     ->preloadOptions()
                     ->placeholder('اختر مدينة')
@@ -221,6 +226,7 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
                 SelectColumn::make('type_id')
                     ->label('النوع (من النظام)')
                     ->options($typeOptions)
+                    ->getOptionLabelUsing($typeOptionLabel)
                     ->searchableOptions()
                     ->preloadOptions()
                     ->placeholder('اختر نوع')
@@ -231,6 +237,7 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
                 SelectColumn::make('category_id')
                     ->label('الفئة (من النظام)')
                     ->options($categoryOptions)
+                    ->getOptionLabelUsing($categoryOptionLabel)
                     ->searchableOptions()
                     ->preloadOptions()
                     ->placeholder('اختر فئة')
@@ -247,6 +254,7 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
                 SelectColumn::make('maintenance_city_id')
                     ->label('مدينة الصيانة (من النظام)')
                     ->options($cityOptions)
+                    ->getOptionLabelUsing($cityOptionLabel)
                     ->searchableOptions()
                     ->preloadOptions()
                     ->placeholder('اختر مدينة')
@@ -266,26 +274,21 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
                     ->label('تعديل')
                     ->icon('heroicon-o-pencil-square')
                     ->color('gray')
-                    ->form([
-                        \Filament\Forms\Components\Textarea::make('location_raw')->label('مكان الفحص'),
-                        \Filament\Forms\Components\Textarea::make('technical_description_raw')->label('الوصف الفني'),
-                        \Filament\Forms\Components\TextInput::make('quantity')->label('الكمية')->numeric()->required()->minValue(0),
-                        \Filament\Forms\Components\Select::make('status')
-                            ->label('الحالة')
-                            ->options(\App\Enums\SparePartStatusEnum::labels())
-                            ->searchable()
-                            ->preload()
-                            ->required(),
-                        \Filament\Forms\Components\TextInput::make('estimated_cost')->label('التكلفة التقديرية للوحدة')->numeric(),
-                        \Filament\Forms\Components\TextInput::make('maintenance_cost')->label('تكلفة الصيانة')->numeric(),
-                    ])
+                    ->form(SparePartForm::components(
+                        locationField: 'location_raw',
+                        technicalDescriptionField: 'technical_description_raw',
+                    ))
                     ->fillForm(fn (SparePartImportRow $record): array => [
+                        'city_id' => $record->city_id,
                         'location_raw' => $record->location_raw,
+                        'type_id' => $record->type_id,
                         'technical_description_raw' => $record->technical_description_raw,
+                        'category_id' => $record->category_id,
                         'quantity' => $record->quantity,
-                        'status' => $record->status,
                         'estimated_cost' => $record->estimated_cost,
+                        'status' => $record->status,
                         'maintenance_cost' => $record->maintenance_cost,
+                        'maintenance_city_id' => $record->maintenance_city_id,
                     ])
                     ->action(function (array $data, SparePartImportRow $record): void {
                         $record->forceFill($data)->save();
