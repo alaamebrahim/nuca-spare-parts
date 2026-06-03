@@ -67,10 +67,8 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
     {
         return $schema
             ->components([
-                Section::make('رفع ملف Excel')
-                    ->description('قم بتحميل نموذج Excel من الأعلى، ثم ارفع الملف هنا لمراجعة البيانات قبل الحفظ.')
-                    ->components([
-                        FileUpload::make('file')
+                FileUpload::make('file')
+                                    ->helperText('قم بتحميل نموذج Excel من الأعلى، ثم ارفع الملف هنا لمراجعة البيانات قبل الحفظ.')
                             ->label('ملف Excel')
                             ->acceptedFileTypes([
                                 // Prefer MIME types (more reliable in Filament v4):
@@ -80,13 +78,11 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
                                 '.xlsx',
                                 '.xls',
                             ])
-                            ->directory('imports/spare-parts/' . $this->getUserId())
+                            ->directory('imports/spare-parts/'.$this->getUserId())
                             ->disk('local')
                             ->visibility('private')
                             ->maxSize(1024 * 20)
                             ->required(),
-                    ])
-                    ->columns(1),
             ])
             ->statePath('data');
     }
@@ -98,7 +94,7 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
                 ->label('تحميل نموذج Excel')
                 ->icon('heroicon-o-arrow-down-tray')
                 ->color('primary')
-                ->action(fn () => Excel::download(new SparePartsImportTemplateExport(), 'spare-parts-import-template.xlsx')),
+                ->action(fn () => Excel::download(new SparePartsImportTemplateExport, 'spare-parts-import-template.xlsx')),
             Action::make('saveToDatabase')
                 ->label('حفظ في قاعدة البيانات')
                 ->icon('heroicon-o-check')
@@ -329,4 +325,3 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
         return (int) (Auth::id() ?? 0);
     }
 }
-
