@@ -5,25 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('page_title', config('app.name'))</title>
     <style>
+        @page {
+            size: A4 landscape;
+            margin: 0.5cm 0.75cm;
+        }
+
         @media screen {
             html {
                 background: #f1f1f1;
             }
 
             .page-container {
-                min-height: calc(297mm - 35px);
+                min-height: calc(210mm - 35px);
             }
         }
 
         .page {
-            max-width: 1080px;
+            max-width: 297mm;
+            width: 100%;
             margin: 0 auto;
-            height: 100%;
         }
 
         .header {
-            width: 90%;
-            margin: 0 auto 20px;
+            width: 96%;
+            margin: 0 auto 12px;
             display: flex;
             align-items: flex-start;
             gap: 12px;
@@ -32,39 +37,49 @@
         .page-container {
             background: #ffffff;
             border-radius: 5px;
-            padding: 15px;
+            padding: 12px 8px;
             width: 100%;
+            box-sizing: border-box;
         }
 
-        table {
+        .report-table {
             border-spacing: 0;
             text-align: center;
-            width: 92%;
-            border: 1px solid #888888 !important;
-            margin: 0 auto;
-            font-weight: bold;
-            table-layout: fixed;
+            width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
+            font-size: 10px;
         }
 
-        .body table th,
-        .body table td {
-            border: 1px solid #888888 !important;
-            padding: 5px;
+        .report-table th,
+        .report-table td {
+            border: 1px solid #888888;
+            padding: 4px 3px;
             word-wrap: break-word;
+            overflow-wrap: anywhere;
+            vertical-align: top;
+            line-height: 1.35;
         }
 
-        .body table th {
+        .report-table th {
             background: #f5f5f5;
+            font-weight: bold;
+            font-size: 9px;
+        }
+
+        .report-table td {
+            font-weight: normal;
         }
 
         .print-btn-container {
-            width: 200px;
+            width: 280px;
             padding: 10px;
             margin: 0 auto;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 6px;
         }
 
         .print-btn {
@@ -76,12 +91,13 @@
             cursor: pointer;
         }
 
-        @media print {
-            @page {
-                size: A4 landscape;
-                margin: 1cm 0.5cm;
-            }
+        .print-hint {
+            font-size: 12px;
+            color: #555;
+            text-align: center;
+        }
 
+        @media print {
             html, body {
                 width: 100%;
                 margin: 0;
@@ -95,22 +111,50 @@
             }
 
             .page-container {
-                padding: 5px !important;
+                padding: 0 !important;
                 width: 100% !important;
+                border-radius: 0;
+            }
+
+            .header {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+
+            .header h3 {
+                font-size: 14pt;
+                margin: 4px 0;
+            }
+
+            .header h4 {
+                font-size: 10pt;
+                margin: 2px 0;
+            }
+
+            .header h6 {
+                font-size: 8pt;
+            }
+
+            .header img {
+                width: 70px !important;
             }
 
             .print-btn-container {
                 display: none;
             }
 
-            table {
+            .report-table {
                 width: 100% !important;
-                font-size: 9pt;
+                font-size: 7pt;
             }
 
-            td, th {
-                font-size: 8pt;
-                padding: 3px !important;
+            .report-table th {
+                font-size: 7pt;
+            }
+
+            .report-table td,
+            .report-table th {
+                padding: 2px !important;
             }
 
             tr {
@@ -123,23 +167,24 @@
 <body>
 <div class="print-btn-container">
     <button onclick="window.print()" class="print-btn">طباعة / حفظ PDF</button>
+    <span class="print-hint">اختر الاتجاه الأفقي (Landscape) في إعدادات الطباعة</span>
 </div>
 <div class="page">
     <div class="page-container">
         <div class="header">
-            <div style="line-height: 1.4em; text-align: center;">
-                <h4 style="margin: 4px 0;">وزارة الاسكان والمرافق والمجتمعات العمرانية الجديدة</h4>
-                <h4 style="margin: 4px 0;">هيئة المجتمعات العمرانية الجديدة</h4>
+            <div style="line-height: 1.3em; text-align: center; flex: 1;">
+                <h4 style="margin: 2px 0;">وزارة الاسكان والمرافق والمجتمعات العمرانية الجديدة</h4>
+                <h4 style="margin: 2px 0;">هيئة المجتمعات العمرانية الجديدة</h4>
             </div>
 
-            <div style="flex-grow: 2; text-align: center;">
-                <h3 style="margin: 8px 0;">@yield('report_title')</h3>
-                <h6 style="color: #333333; margin: 4px 0;">وقت الطباعة<br>{{ now()->format('Y-m-d H:i') }}</h6>
+            <div style="flex: 2; text-align: center;">
+                <h3 style="margin: 6px 0;">@yield('report_title')</h3>
+                <h6 style="color: #333333; margin: 2px 0;">وقت الطباعة<br>{{ now()->format('Y-m-d H:i') }}</h6>
                 @yield('report_head')
             </div>
 
-            <div style="text-align: center;">
-                <img src="{{ asset('img/logo.png') }}" alt="الشعار" style="width: 100px;"/>
+            <div style="text-align: center; flex: 1;">
+                <img src="{{ asset('img/logo.png') }}" alt="الشعار" style="width: 80px;"/>
             </div>
         </div>
         <div class="body">

@@ -4,10 +4,24 @@
 @section('report_title', 'تقرير عمليات التركيب')
 
 @section('content')
-    <table>
+    <table class="report-table">
+        <colgroup>
+            <col style="width: 3%;">
+            <col style="width: 7%;">
+            <col style="width: 7%;">
+            <col style="width: 14%;">
+            <col style="width: 8%;">
+            <col style="width: 8%;">
+            <col style="width: 5%;">
+            <col style="width: 7%;">
+            <col style="width: 7%;">
+            <col style="width: 14%;">
+            <col style="width: 12%;">
+            <col style="width: 8%;">
+        </colgroup>
         <thead>
             <tr>
-                <th style="width: 3%;">م</th>
+                <th>م</th>
                 <th>نوع المهمة</th>
                 <th>فئة المهمة</th>
                 <th>الوصف الفني</th>
@@ -27,14 +41,14 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $record->sparePart?->type?->name ?? '-' }}</td>
                     <td>{{ $record->sparePart?->category?->name ?? '-' }}</td>
-                    <td>{{ $record->sparePart?->technical_description ?? '-' }}</td>
+                    <td style="text-align: right;">{{ $record->sparePart?->technical_description ?? '-' }}</td>
                     <td>{{ $record->examineCity?->name ?? '-' }}</td>
                     <td>{{ $record->beneficiaryCity?->name ?? '-' }}</td>
                     <td>{{ $record->quantity }}</td>
                     <td>{{ $record->installation_date?->format('Y-m-d') ?? '-' }}</td>
                     <td>{{ \App\Enums\InstallationStatusEnum::from($record->status)->label() }}</td>
-                    <td>{{ $record->description ?? '-' }}</td>
-                    <td>{{ $record->notes ?? '-' }}</td>
+                    <td style="text-align: right;">{{ $record->description ?? '-' }}</td>
+                    <td style="text-align: right;">{{ $record->notes ?? '-' }}</td>
                     <td>{{ $record->created_at?->format('Y-m-d H:i') }}</td>
                 </tr>
             @empty

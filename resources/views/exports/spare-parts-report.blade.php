@@ -4,10 +4,26 @@
 @section('report_title', 'تقرير المهمات')
 
 @section('content')
-    <table>
+    <table class="report-table">
+        <colgroup>
+            <col style="width: 2%;">
+            <col style="width: 6%;">
+            <col style="width: 7%;">
+            <col style="width: 6%;">
+            <col style="width: 6%;">
+            <col style="width: 16%;">
+            <col style="width: 4%;">
+            <col style="width: 8%;">
+            <col style="width: 6%;">
+            <col style="width: 6%;">
+            <col style="width: 6%;">
+            <col style="width: 8%;">
+            <col style="width: 6%;">
+            <col style="width: 9%;">
+        </colgroup>
         <thead>
             <tr>
-                <th style="width: 3%;">م</th>
+                <th>م</th>
                 <th>المدينة</th>
                 <th>مكان الفحص</th>
                 <th>نوع المهمة</th>
@@ -31,7 +47,7 @@
                     <td>{{ $record->location ?? '-' }}</td>
                     <td>{{ $record->type?->name ?? '-' }}</td>
                     <td>{{ $record->category?->name ?? '-' }}</td>
-                    <td>{{ $record->technical_description ?? '-' }}</td>
+                    <td style="text-align: right;">{{ $record->technical_description ?? '-' }}</td>
                     <td>{{ $record->quantity }}</td>
                     <td>{{ \App\Enums\SparePartStatusEnum::from($record->status)->label() }}</td>
                     <td>{{ number_format($record->estimated_cost, 2) }}</td>
