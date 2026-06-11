@@ -64,7 +64,7 @@ class InstallationOperationForm
                                 ->label('الحالة')
                                 ->options(InstallationStatusEnum::labels())
                                 ->required()
-                                ->default(InstallationStatusEnum::Pending->value),
+                                ->default(InstallationStatusEnum::Completed->value),
                             Textarea::make('description')
                                 ->label('كيفية الاستفادة')
                                 ->rows(3),
