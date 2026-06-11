@@ -19,7 +19,6 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\Page;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -68,21 +67,14 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
         return $schema
             ->components([
                 FileUpload::make('file')
-                                    ->helperText('قم بتحميل نموذج Excel من الأعلى، ثم ارفع الملف هنا لمراجعة البيانات قبل الحفظ.')
-                            ->label('ملف Excel')
-                            ->acceptedFileTypes([
-                                // Prefer MIME types (more reliable in Filament v4):
-                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                                'application/vnd.ms-excel',
-                                // Fallback to extensions (helps some OS file pickers):
-                                '.xlsx',
-                                '.xls',
-                            ])
-                            ->directory('imports/spare-parts/'.$this->getUserId())
-                            ->disk('local')
-                            ->visibility('private')
-                            ->maxSize(1024 * 20)
-                            ->required(),
+                    ->helperText('قم بتحميل نموذج Excel من الأعلى، ثم ارفع الملف هنا لمراجعة البيانات قبل الحفظ.')
+                    ->label('ملف Excel')
+                    ->rule('mimes:xlsx,xls')
+                    ->directory('imports/spare-parts/'.$this->getUserId())
+                    ->disk('local')
+                    ->visibility('private')
+                    ->maxSize(1024 * 20)
+                    ->required(),
             ])
             ->statePath('data');
     }
