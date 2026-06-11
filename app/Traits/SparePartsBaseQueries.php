@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Data\SpareParts\SparePartsReportFilterData;
 use App\Models\SparePart;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -17,7 +18,26 @@ trait SparePartsBaseQueries
 
     public static function filtered(SparePartsReportFilterData $filters): Builder
     {
-        $qb = QueryBuilder::for(self::baseQuery())
+        $params = ['filter' => []];
+
+        foreach (['city_id', 'type_id', 'category_id', 'maintenance_city_id', 'status'] as $key) {
+            if (! empty($filters->{$key})) {
+                $params['filter'][$key] = $filters->{$key};
+            }
+        }
+
+        foreach ([
+            'quantity_from', 'quantity_to', 'cost_from', 'cost_to',
+            'created_from', 'created_to', 'maintenance_cost_from', 'maintenance_cost_to',
+        ] as $key) {
+            if (! empty($filters->{$key})) {
+                $params['filter'][$key] = $filters->{$key};
+            }
+        }
+
+        $request = Request::create('/', 'GET', $params);
+
+        return QueryBuilder::for(self::baseQuery(), $request)
             ->allowedFilters([
                 AllowedFilter::exact('city_id'),
                 AllowedFilter::exact('type_id'),
@@ -48,25 +68,7 @@ trait SparePartsBaseQueries
                 AllowedFilter::callback('maintenance_cost_to', function ($query, $value) {
                     $query->where('maintenance_cost', '<=', $value);
                 }),
-            ]);
-
-        $params = [];
-        $params['filter'] = [];
-        foreach (['city_id','type_id','category_id','maintenance_city_id','status'] as $key) {
-            if (!empty($filters->{$key})) {
-                $params['filter'][$key] = $filters->{$key};
-            }
-        }
-        foreach ([
-            'quantity_from','quantity_to','cost_from','cost_to',
-            'created_from','created_to','maintenance_cost_from','maintenance_cost_to',
-        ] as $key) {
-            if (!empty($filters->{$key})) {
-                $params['filter'][$key] = $filters->{$key};
-            }
-        }
-
-        return $qb->setRequest(request()->merge($params))->getEloquentBuilder();
+            ])
+            ->getEloquentBuilder();
     }
 }
-
