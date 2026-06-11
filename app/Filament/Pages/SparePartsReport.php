@@ -2,34 +2,41 @@
 
 namespace App\Filament\Pages;
 
+use App\Data\SpareParts\SparePartsReportFilterData;
 use App\Enums\SparePartStatusEnum;
+use App\Exports\SparePartsReportExport;
 use App\Models\City;
 use App\Models\SparePart;
 use App\Models\SparePartCategory;
 use App\Models\SparePartType;
+use App\Traits\HasPageExport;
+use App\Traits\HasReportPrintExport;
+use App\Traits\SparePartsBaseQueries;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Schemas\Schema;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class SparePartsReport extends Page implements HasTable, HasForms
+class SparePartsReport extends Page implements HasForms, HasTable
 {
-    use InteractsWithTable, InteractsWithForms;
+    use HasPageExport, HasReportPrintExport, InteractsWithForms, InteractsWithTable;
 
     public static function getNavigationIcon(): ?string
     {
         return 'heroicon-o-document-chart-bar';
     }
+
     protected static ?string $navigationLabel = 'تقرير المهمات';
+
     protected static ?string $title = 'تقرير المهمات';
 
     public static function getNavigationGroup(): ?string
@@ -43,6 +50,7 @@ class SparePartsReport extends Page implements HasTable, HasForms
     }
 
     public ?array $data = [];
+
     public bool $showResults = false;
 
     public function mount(): void
@@ -135,6 +143,7 @@ class SparePartsReport extends Page implements HasTable, HasForms
                     ->limit(30)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
+
                         return strlen($state) > 30 ? $state : null;
                     }),
                 TextColumn::make('type.name')
@@ -150,6 +159,7 @@ class SparePartsReport extends Page implements HasTable, HasForms
                     ->limit(40)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
+
                         return strlen($state) > 40 ? $state : null;
                     }),
                 TextColumn::make('quantity')
@@ -158,7 +168,7 @@ class SparePartsReport extends Page implements HasTable, HasForms
                     ->alignCenter(),
                 TextColumn::make('status')
                     ->label('الحالة')
-                    ->formatStateUsing(fn($state) => SparePartStatusEnum::from($state)->label())
+                    ->formatStateUsing(fn ($state) => SparePartStatusEnum::from($state)->label())
                     ->badge()
                     ->sortable(),
                 TextColumn::make('estimated_cost')
@@ -167,7 +177,7 @@ class SparePartsReport extends Page implements HasTable, HasForms
                     ->alignCenter(),
                 TextColumn::make('total_cost')
                     ->label('إجمالي التكلفة')
-                    ->getStateUsing(fn(SparePart $record) => \App\DataProcessors\SparePartsDataProcessor::estimatedTotal($record))
+                    ->getStateUsing(fn (SparePart $record) => \App\DataProcessors\SparePartsDataProcessor::estimatedTotal($record))
                     ->sortable()
                     ->alignCenter(),
                 TextColumn::make('maintenance_cost')
@@ -180,7 +190,7 @@ class SparePartsReport extends Page implements HasTable, HasForms
                     ->searchable(),
                 TextColumn::make('total_maintenance_cost')
                     ->label('إجمالي تكلفة الصيانة')
-                    ->getStateUsing(fn(SparePart $record) => \App\DataProcessors\SparePartsDataProcessor::maintenanceTotal($record))
+                    ->getStateUsing(fn (SparePart $record) => \App\DataProcessors\SparePartsDataProcessor::maintenanceTotal($record))
                     ->sortable()
                     ->alignCenter(),
                 TextColumn::make('created_at')
@@ -196,16 +206,36 @@ class SparePartsReport extends Page implements HasTable, HasForms
 
     protected function getFilteredQuery(): Builder
     {
-        if (!$this->showResults) {
+        if (! $this->showResults) {
             return SparePart::query()->whereRaw('1 = 0');
         }
         $filters = \App\Data\SpareParts\SparePartsReportFilterData::from($this->data ?? []);
+
         return \App\Traits\SparePartsBaseQueries::filtered($filters);
+    }
+
+    protected function getExportClass(): string
+    {
+        return SparePartsReportExport::class;
+    }
+
+    protected function getExportBaseFilename(): string
+    {
+        return 'spare-parts-report';
+    }
+
+    protected function getExportQuery(): Builder
+    {
+        $filters = SparePartsReportFilterData::from($this->data ?? []);
+
+        return SparePartsBaseQueries::filtered($filters)->orderByDesc('created_at');
     }
 
     protected function getHeaderActions(): array
     {
         return [
+            $this->getPrintReportAction('reports.spare-parts'),
+            $this->getExportAction(),
             Action::make('search')
                 ->label('البحث')
                 ->icon('heroicon-o-magnifying-glass')

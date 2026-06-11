@@ -2,35 +2,41 @@
 
 namespace App\Filament\Pages;
 
+use App\Data\InstallationOperations\InstallationOperationsFilterData;
 use App\Enums\InstallationStatusEnum;
+use App\Exports\InstallationOperationsReportExport;
 use App\Models\City;
 use App\Models\InstallationOperation;
-use App\Models\SparePart;
 use App\Models\SparePartCategory;
 use App\Models\SparePartType;
+use App\Traits\HasPageExport;
+use App\Traits\HasReportPrintExport;
+use App\Traits\InstallationOperationsBaseQueries;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Schemas\Schema;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
-class InstallationOperationsReport extends Page implements HasTable, HasForms
+class InstallationOperationsReport extends Page implements HasForms, HasTable
 {
-    use InteractsWithTable, InteractsWithForms;
+    use HasPageExport, HasReportPrintExport, InteractsWithForms, InteractsWithTable;
 
     public static function getNavigationIcon(): ?string
     {
         return 'heroicon-o-wrench-screwdriver';
     }
+
     protected static ?string $navigationLabel = 'تقرير عمليات التركيب';
+
     protected static ?string $title = 'تقرير عمليات التركيب';
 
     public static function getNavigationGroup(): ?string
@@ -44,6 +50,7 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
     }
 
     public ?array $data = [];
+
     public bool $showResults = false;
 
     public function mount(): void
@@ -64,12 +71,13 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                     ->multiple()
                     ->live()
                     // Clear spare part selection when city filter changes
-                    ->afterStateUpdated(fn($set) => $set('spare_part_id', [])),
+                    ->afterStateUpdated(fn ($set) => $set('spare_part_id', [])),
                 Select::make('spare_part_id')
                     ->label('المهمة')
                     ->columnSpan(2)
                     ->options(function ($get) {
                         $cityIds = $get('examine_city_id') ?? [];
+
                         return \App\DataProcessors\InstallationOperationsDataProcessor::sparePartOptionsForCities($cityIds);
                     })
                     ->searchable()
@@ -142,6 +150,7 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                     ->limit(40)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
+
                         return strlen($state) > 40 ? $state : null;
                     }),
                 TextColumn::make('examineCity.name')
@@ -162,9 +171,9 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                     ->sortable(),
                 TextColumn::make('status')
                     ->label('حالة التركيب')
-                    ->formatStateUsing(fn($state) => InstallationStatusEnum::from($state)->label())
+                    ->formatStateUsing(fn ($state) => InstallationStatusEnum::from($state)->label())
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'pending' => 'warning',
                         'in_progress' => 'info',
                         'completed' => 'success',
@@ -177,6 +186,7 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                     ->limit(30)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
+
                         return strlen($state) > 30 ? $state : null;
                     }),
                 TextColumn::make('notes')
@@ -184,6 +194,7 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
                     ->limit(30)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
+
                         return strlen($state) > 30 ? $state : null;
                     }),
                 TextColumn::make('created_at')
@@ -199,16 +210,36 @@ class InstallationOperationsReport extends Page implements HasTable, HasForms
 
     protected function getFilteredQuery(): Builder
     {
-        if (!$this->showResults) {
+        if (! $this->showResults) {
             return InstallationOperation::query()->whereRaw('1 = 0');
         }
         $filters = \App\Data\InstallationOperations\InstallationOperationsFilterData::from($this->data ?? []);
+
         return \App\Traits\InstallationOperationsBaseQueries::filtered($filters);
+    }
+
+    protected function getExportClass(): string
+    {
+        return InstallationOperationsReportExport::class;
+    }
+
+    protected function getExportBaseFilename(): string
+    {
+        return 'installation-operations-report';
+    }
+
+    protected function getExportQuery(): Builder
+    {
+        $filters = InstallationOperationsFilterData::from($this->data ?? []);
+
+        return InstallationOperationsBaseQueries::filtered($filters)->orderByDesc('created_at');
     }
 
     protected function getHeaderActions(): array
     {
         return [
+            $this->getPrintReportAction('reports.installation-operations'),
+            $this->getExportAction(),
             Action::make('search')
                 ->label('البحث')
                 ->icon('heroicon-o-magnifying-glass')

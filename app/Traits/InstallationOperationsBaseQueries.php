@@ -20,7 +20,7 @@ trait InstallationOperationsBaseQueries
     {
         $params = ['filter' => []];
 
-        foreach (['spare_part_id', 'examine_city_id', 'beneficiary_city_id', 'status'] as $key) {
+        foreach (['spare_part_id', 'examine_city_id', 'beneficiary_city_id', 'status', 'spare_part_type_id', 'spare_part_category_id'] as $key) {
             if (! empty($filters->{$key})) {
                 $params['filter'][$key] = $filters->{$key};
             }
@@ -59,6 +59,14 @@ trait InstallationOperationsBaseQueries
                 }),
                 AllowedFilter::callback('created_to', function ($query, $value) {
                     $query->whereDate('created_at', '<=', $value);
+                }),
+                AllowedFilter::callback('spare_part_type_id', function ($query, $value) {
+                    $ids = is_array($value) ? $value : [$value];
+                    $query->whereHas('sparePart', fn ($q) => $q->whereIn('type_id', $ids));
+                }),
+                AllowedFilter::callback('spare_part_category_id', function ($query, $value) {
+                    $ids = is_array($value) ? $value : [$value];
+                    $query->whereHas('sparePart', fn ($q) => $q->whereIn('category_id', $ids));
                 }),
             ])
             ->getEloquentBuilder();
