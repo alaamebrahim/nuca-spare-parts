@@ -53,13 +53,13 @@ class SparePartsTable
                 TextColumn::make('installed_quantity')
                     ->label('الكمية المنقولة')
                     ->numeric()
-                    ->color('success')
+                    ->color('danger')
                     ->alignCenter()
                     ->sortable(),
                 TextColumn::make('available_quantity')
                     ->label('الكمية المتاحة')
                     ->numeric()
-                    ->color('danger')
+                    ->color('success')
                     ->alignCenter()
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query->orderByRaw(
