@@ -50,12 +50,12 @@ class SparePartsTable
                     ->alignCenter()
                     ->sortable(),
                 TextColumn::make('installed_quantity')
-                    ->label('الكمية المستخدمة (عمليات التركيب)')
+                    ->label('الكمية المنقولة')
                     ->numeric()
                     ->alignCenter()
                     ->sortable(),
                 TextColumn::make('available_quantity')
-                    ->label('الكمية المتبقية')
+                    ->label('الكمية المتاحة')
                     ->numeric()
                     ->alignCenter()
                     ->sortable(query: function (Builder $query, string $direction): Builder {
