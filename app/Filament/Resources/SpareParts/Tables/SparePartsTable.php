@@ -47,25 +47,25 @@ class SparePartsTable
                 TextColumn::make('quantity')
                     ->label('الكمية الإجمالية')
                     ->numeric()
+                    ->color('info')
                     ->alignCenter()
-                    ->badge('info')
                     ->sortable(),
                 TextColumn::make('installed_quantity')
                     ->label('الكمية المنقولة')
                     ->numeric()
+                    ->color('success')
                     ->alignCenter()
-                    ->badge('success')
                     ->sortable(),
                 TextColumn::make('available_quantity')
                     ->label('الكمية المتاحة')
                     ->numeric()
+                    ->color('danger')
                     ->alignCenter()
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query->orderByRaw(
                             '(quantity - COALESCE(installed_quantity, 0)) '.$direction
                         );
-                    })
-                    ->badge('warning'),
+                    }),
                 TextColumn::make('status')
                     ->formatStateUsing(fn($state) => SparePartStatusEnum::from($state)->label())
                     ->alignCenter()
