@@ -17,13 +17,14 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use App\Models\City;
-use App\Models\InstallationOperation;
+use Illuminate\Database\Eloquent\Builder;
 
 class SparePartsTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->withInstallationQuantities())
             ->columns([
                 TextColumn::make('type.name')
                     ->alignCenter()
@@ -48,6 +49,20 @@ class SparePartsTable
                     ->numeric()
                     ->alignCenter()
                     ->sortable(),
+                TextColumn::make('installed_quantity')
+                    ->label('الكمية المستخدمة (عمليات التركيب)')
+                    ->numeric()
+                    ->alignCenter()
+                    ->sortable(),
+                TextColumn::make('available_quantity')
+                    ->label('الكمية المتبقية')
+                    ->numeric()
+                    ->alignCenter()
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->orderByRaw(
+                            '(quantity - COALESCE(installed_quantity, 0)) '.$direction
+                        );
+                    }),
                 TextColumn::make('status')
                     ->formatStateUsing(fn($state) => SparePartStatusEnum::from($state)->label())
                     ->alignCenter()

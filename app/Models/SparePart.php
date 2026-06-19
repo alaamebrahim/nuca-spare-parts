@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -46,12 +47,27 @@ class SparePart extends Model
         return $this->hasMany(InstallationOperation::class);
     }
 
-    public function getAvailableQuantityAttribute(): int
+    public function scopeWithInstallationQuantities(Builder $query): Builder
     {
-        $installedQuantity = $this->installationOperations()
+        return $query->withSum(
+            ['installationOperations as installed_quantity' => fn (Builder $q) => $q->where('status', '!=', 'cancelled')],
+            'quantity'
+        );
+    }
+
+    public function getInstalledQuantityAttribute(): int
+    {
+        if (array_key_exists('installed_quantity', $this->attributes)) {
+            return (int) $this->attributes['installed_quantity'];
+        }
+
+        return (int) $this->installationOperations()
             ->where('status', '!=', 'cancelled')
             ->sum('quantity');
+    }
 
-        return max(0, $this->quantity - $installedQuantity);
+    public function getAvailableQuantityAttribute(): int
+    {
+        return max(0, $this->quantity - $this->installed_quantity);
     }
 }

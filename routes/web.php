@@ -9,6 +9,10 @@ Route::get('/', function () {
 });
 
 Route::middleware(['web', 'auth'])->prefix('admin/reports')->group(function () {
-    Route::get('spare-parts', SparePartsReportController::class)->name('reports.spare-parts');
-    Route::get('installation-operations', InstallationOperationsReportController::class)->name('reports.installation-operations');
+    Route::get('spare-parts', SparePartsReportController::class)
+        ->middleware('can:page_SparePartsReport')
+        ->name('reports.spare-parts');
+    Route::get('installation-operations', InstallationOperationsReportController::class)
+        ->middleware('can:page_InstallationOperationsReport')
+        ->name('reports.installation-operations');
 });

@@ -12,6 +12,7 @@ use App\Models\SparePartType;
 use App\Traits\HasPageExport;
 use App\Traits\HasReportPrintExport;
 use App\Traits\InstallationOperationsBaseQueries;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -28,7 +29,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class InstallationOperationsReport extends Page implements HasForms, HasTable
 {
-    use HasPageExport, HasReportPrintExport, InteractsWithForms, InteractsWithTable;
+    use HasPageExport, HasPageShield, HasReportPrintExport, InteractsWithForms, InteractsWithTable;
 
     public static function getNavigationIcon(): ?string
     {

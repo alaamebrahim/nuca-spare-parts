@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Support\ReportNumber;
 use Illuminate\Database\Eloquent\Builder;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -44,10 +45,6 @@ abstract class BaseExport implements FromQuery, ShouldAutoSize, WithHeadings, Wi
 
     protected function formatNumber(float|int|null $value, int $decimals = 2): string
     {
-        if ($value === null) {
-            return '-';
-        }
-
-        return number_format((float) $value, $decimals);
+        return ReportNumber::format($value, $decimals);
     }
 }

@@ -50,11 +50,11 @@
                     <td style="text-align: right;">{{ $record->technical_description ?? '-' }}</td>
                     <td>{{ $record->quantity }}</td>
                     <td>{{ \App\Enums\SparePartStatusEnum::from($record->status)->label() }}</td>
-                    <td>{{ number_format($record->estimated_cost, 2) }}</td>
-                    <td>{{ number_format(\App\DataProcessors\SparePartsDataProcessor::estimatedTotal($record), 2) }}</td>
-                    <td>{{ number_format($record->maintenance_cost, 2) }}</td>
+                    <td>{{ \App\Support\ReportNumber::format($record->estimated_cost) }}</td>
+                    <td>{{ \App\Support\ReportNumber::format(\App\DataProcessors\SparePartsDataProcessor::estimatedTotal($record)) }}</td>
+                    <td>{{ \App\Support\ReportNumber::format($record->maintenance_cost) }}</td>
                     <td>{{ $record->maintenanceCity?->name ?? '-' }}</td>
-                    <td>{{ number_format(\App\DataProcessors\SparePartsDataProcessor::maintenanceTotal($record), 2) }}</td>
+                    <td>{{ \App\Support\ReportNumber::format(\App\DataProcessors\SparePartsDataProcessor::maintenanceTotal($record)) }}</td>
                     <td>{{ $record->created_at?->format('Y-m-d H:i') }}</td>
                 </tr>
             @empty
