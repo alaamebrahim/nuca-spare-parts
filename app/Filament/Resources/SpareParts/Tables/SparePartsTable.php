@@ -45,7 +45,7 @@ class SparePartsTable
                     ->searchable()
                     ->sortable(),
                 TextColumn::make('quantity')
-                    ->label('الكمية')
+                    ->label('الكمية الإجمالية')
                     ->numeric()
                     ->alignCenter()
                     ->sortable(),
