@@ -41,6 +41,14 @@ class InstallationOperationsTable
                     ->alignCenter()
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('sparePart.technical_description')
+                    ->label('الوصف الفني')
+                    ->limit(40)
+                    ->tooltip(function (TextColumn $column): ?string {
+                        $state = $column->getState();
+
+                        return strlen($state) > 40 ? $state : null;
+                    }),
                 TextColumn::make('quantity')
                     ->label('الكمية')
                     ->numeric()
