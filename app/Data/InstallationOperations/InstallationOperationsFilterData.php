@@ -16,8 +16,6 @@ class InstallationOperationsFilterData extends Data
         public ?array $examine_city_id,
         #[ArrayType]
         public ?array $beneficiary_city_id,
-        #[ArrayType]
-        public ?array $status,
         #[IntegerType]
         public ?int $quantity_from,
         #[IntegerType]

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\InstallationOperations\Schemas;
 
-use App\Enums\InstallationStatusEnum;
 use App\Models\City;
 use App\Models\SparePart;
 use Filament\Forms\Components\Select;
@@ -60,11 +59,6 @@ class InstallationOperationForm
                             DatePicker::make('installation_date')
                                 ->label('تاريخ التركيب')
                                 ->required(),
-                            Select::make('status')
-                                ->label('الحالة')
-                                ->options(InstallationStatusEnum::labels())
-                                ->required()
-                                ->default(InstallationStatusEnum::Completed->value),
                             Textarea::make('description')
                                 ->label('كيفية الاستفادة')
                                 ->rows(3),

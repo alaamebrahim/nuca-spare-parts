@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Enums\InstallationStatusEnum;
 use App\Models\InstallationOperation;
 
 class InstallationOperationsReportExport extends BaseExport
@@ -18,7 +17,6 @@ class InstallationOperationsReportExport extends BaseExport
             'مدينة المستفيد',
             'الكمية',
             'تاريخ التركيب',
-            'حالة التركيب',
             'كيفية الاستفادة',
             'الملاحظات',
             'تاريخ الإضافة',
@@ -40,7 +38,6 @@ class InstallationOperationsReportExport extends BaseExport
             $record->beneficiaryCity?->name ?? '-',
             $record->quantity,
             $record->installation_date?->format('Y-m-d') ?? '-',
-            InstallationStatusEnum::from($record->status)->label(),
             $record->description ?? '-',
             $record->notes ?? '-',
             $record->created_at?->format('Y-m-d H:i') ?? '-',

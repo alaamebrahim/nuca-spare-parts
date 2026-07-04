@@ -29,7 +29,6 @@ class InstallationOperationsReportController extends Controller
             'spare_part_id',
             'examine_city_id',
             'beneficiary_city_id',
-            'status',
             'quantity_from',
             'quantity_to',
             'installation_date_from',

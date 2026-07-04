@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\InstallationOperations\Tables;
 
-use App\Enums\InstallationStatusEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
@@ -53,12 +52,6 @@ class InstallationOperationsTable
                     ->date()
                     ->alignCenter()
                     ->sortable(),
-                TextColumn::make('status')
-                    ->formatStateUsing(fn($state) => InstallationStatusEnum::from($state)->label())
-                    ->alignCenter()
-                    ->badge()
-                    ->label('الحالة')
-                    ->searchable(),
                 TextColumn::make('description')
                     ->label('كيفية الاستفادة')
                     ->limit(30)
@@ -80,11 +73,6 @@ class InstallationOperationsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                SelectFilter::make('status')
-                    ->label('الحالة')
-                    ->options(InstallationStatusEnum::labels())
-                    ->searchable()
-                    ->preload(),
                 SelectFilter::make('spare_part_id')
                     ->label('قطعة الغيار')
                     ->relationship('sparePart', 'id')
@@ -121,9 +109,6 @@ class InstallationOperationsTable
                                     TextEntry::make('installation_date')
                                         ->label('تاريخ التركيب')
                                         ->date(),
-                                    TextEntry::make('status')
-                                        ->label('الحالة')
-                                        ->formatStateUsing(fn($state) => InstallationStatusEnum::from($state)->label()),
                                     TextEntry::make('description')
                                         ->label('كيفية الاستفادة')
                                         ->default('-'),

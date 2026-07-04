@@ -15,7 +15,6 @@ class InstallationOperation extends Model
         'installation_date',
         'description',
         'notes',
-        'status',
     ];
 
     protected $casts = [

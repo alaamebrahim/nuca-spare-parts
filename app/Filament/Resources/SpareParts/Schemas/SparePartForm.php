@@ -52,11 +52,13 @@ class SparePartForm
                     ->label('الكمية')
                     ->required()
                     ->numeric()
+                    ->minValue(0)
                     ->default(0),
                 TextInput::make('estimated_cost')
                     ->label('التكلفة التقديرية للوحدة')
                     ->numeric()
-                    ->default(0.0),
+                    ->minValue(0)
+                    ->default(0),
                 Select::make('status')
                     ->label('الحالة')
                     ->required()
@@ -66,14 +68,15 @@ class SparePartForm
                     ->live()
                     ->afterStateUpdated(function ($state, $set): void {
                         if ($state !== SparePartStatusEnum::Maintained->value) {
-                            $set('maintenance_cost', 0.0);
+                            $set('maintenance_cost', 0);
                             $set('maintenance_city_id', null);
                         }
                     }),
                 TextInput::make('maintenance_cost')
                     ->label('تكلفة الصيانة ')
                     ->numeric()
-                    ->default(0.0)
+                    ->minValue(0)
+                    ->default(0)
                     ->visible(fn ($get): bool => $get('status') === SparePartStatusEnum::Maintained->value),
                 Select::make('maintenance_city_id')
                     ->label('المدينة المنوطة بالصيانة')

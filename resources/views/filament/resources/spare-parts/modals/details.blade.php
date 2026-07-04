@@ -145,8 +145,6 @@
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                             تاريخ التركيب</th>
                         <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            الحالة</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                             ملاحظات</th>
                     </tr>
                 </thead>
@@ -161,16 +159,6 @@
                             number_format($operation->quantity) }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{
                             $operation->installation_date->format('Y-m-d') }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                @if($operation->status === 'completed') bg-green-100 text-green-800
-                                @elseif($operation->status === 'in_progress') bg-yellow-100 text-yellow-800
-                                @elseif($operation->status === 'cancelled') bg-red-100 text-red-800
-                                @else bg-gray-100 text-gray-800
-                                @endif">
-                                {{ \App\Enums\InstallationStatusEnum::from($operation->status)->label() }}
-                            </span>
-                        </td>
                         <td class="px-6 py-4 text-sm text-gray-900">{{ $operation->notes ?? '-' }}</td>
                     </tr>
                     @endforeach

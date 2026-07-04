@@ -9,6 +9,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SparePart extends Model
 {
+    protected $attributes = [
+        'quantity' => 0,
+        'estimated_cost' => 0,
+        'maintenance_cost' => 0,
+    ];
+
+    protected $casts = [
+        'quantity' => 'integer',
+        'estimated_cost' => 'decimal:2',
+        'maintenance_cost' => 'decimal:2',
+    ];
+
     protected $fillable = [
         'city_id',
         'type_id',
@@ -49,10 +61,7 @@ class SparePart extends Model
 
     public function scopeWithInstallationQuantities(Builder $query): Builder
     {
-        return $query->withSum(
-            ['installationOperations as installed_quantity' => fn (Builder $q) => $q->where('status', '!=', 'cancelled')],
-            'quantity'
-        );
+        return $query->withSum('installationOperations as installed_quantity', 'quantity');
     }
 
     public function getInstalledQuantityAttribute(): int
@@ -61,9 +70,7 @@ class SparePart extends Model
             return (int) $this->attributes['installed_quantity'];
         }
 
-        return (int) $this->installationOperations()
-            ->where('status', '!=', 'cancelled')
-            ->sum('quantity');
+        return (int) $this->installationOperations()->sum('quantity');
     }
 
     public function getAvailableQuantityAttribute(): int

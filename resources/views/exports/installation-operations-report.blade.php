@@ -14,7 +14,6 @@
             <col style="width: 8%;">
             <col style="width: 5%;">
             <col style="width: 7%;">
-            <col style="width: 7%;">
             <col style="width: 14%;">
             <col style="width: 12%;">
             <col style="width: 8%;">
@@ -29,7 +28,6 @@
                 <th>مدينة المستفيد</th>
                 <th>الكمية</th>
                 <th>تاريخ التركيب</th>
-                <th>حالة التركيب</th>
                 <th>كيفية الاستفادة</th>
                 <th>الملاحظات</th>
                 <th>تاريخ الإضافة</th>
@@ -46,14 +44,13 @@
                     <td>{{ $record->beneficiaryCity?->name ?? '-' }}</td>
                     <td>{{ $record->quantity }}</td>
                     <td>{{ $record->installation_date?->format('Y-m-d') ?? '-' }}</td>
-                    <td>{{ \App\Enums\InstallationStatusEnum::from($record->status)->label() }}</td>
                     <td style="text-align: right;">{{ $record->description ?? '-' }}</td>
                     <td style="text-align: right;">{{ $record->notes ?? '-' }}</td>
                     <td>{{ $record->created_at?->format('Y-m-d H:i') }}</td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="12">لا توجد بيانات مطابقة للفلاتر المحددة</td>
+                    <td colspan="11">لا توجد بيانات مطابقة للفلاتر المحددة</td>
                 </tr>
             @endforelse
         </tbody>

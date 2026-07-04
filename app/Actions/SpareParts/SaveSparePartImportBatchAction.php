@@ -48,7 +48,7 @@ class SaveSparePartImportBatchAction
                         'quantity' => $row->quantity ?? 0,
                         'status' => $row->status,
                         'estimated_cost' => $row->estimated_cost ?? 0,
-                        'maintenance_cost' => $row->maintenance_cost,
+                        'maintenance_cost' => $row->maintenance_cost ?? 0,
                         'maintenance_city_id' => $row->maintenance_city_id,
                     ]);
 

@@ -35,9 +35,9 @@ class SparePartImportRowData extends Data
         $location = self::stringOrNull($row['location'] ?? null);
         $technicalDescription = self::stringOrNull($row['technical_description'] ?? null);
 
-        $quantity = self::intOrNull($row['quantity'] ?? null);
-        $estimatedCost = self::floatOrNull($row['estimated_cost'] ?? null);
-        $maintenanceCost = self::floatOrNull($row['maintenance_cost'] ?? null);
+        $quantity = self::intOrNull($row['quantity'] ?? null) ?? 0;
+        $estimatedCost = self::floatOrNull($row['estimated_cost'] ?? null) ?? 0;
+        $maintenanceCost = self::floatOrNull($row['maintenance_cost'] ?? null) ?? 0;
 
         $status = self::normalizeStatus(self::stringOrNull($row['status'] ?? null));
 
@@ -51,7 +51,7 @@ class SparePartImportRowData extends Data
         if (! filled($categoryName)) {
             $errors['category_name'] = 'الفئة مطلوبة';
         }
-        if (! filled($quantity) || ($quantity < 0)) {
+        if ($quantity < 0) {
             $errors['quantity'] = 'الكمية غير صحيحة';
         }
         if (! filled($status)) {

@@ -31,7 +31,7 @@ class SparePartImportRowsDataProcessor
             unset($errors['category_name']);
         }
 
-        if (! filled($row->quantity) || ($row->quantity < 0)) {
+        if ($row->quantity === null || $row->quantity < 0) {
             $errors['quantity'] ??= 'الكمية غير صحيحة';
         } else {
             unset($errors['quantity']);

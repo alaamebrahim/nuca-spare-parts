@@ -3,7 +3,6 @@
 namespace App\Filament\Pages;
 
 use App\Data\InstallationOperations\InstallationOperationsFilterData;
-use App\Enums\InstallationStatusEnum;
 use App\Exports\InstallationOperationsReportExport;
 use App\Models\City;
 use App\Models\InstallationOperation;
@@ -90,12 +89,6 @@ class InstallationOperationsReport extends Page implements HasForms, HasTable
                     ->searchable()
                     ->preload()
                     ->multiple(),
-                Select::make('status')
-                    ->label('حالة التركيب')
-                    ->options(InstallationStatusEnum::labels())
-                    ->searchable()
-                    ->preload()
-                    ->multiple(),
                 TextInput::make('quantity_from')
                     ->label('الكمية من')
                     ->numeric()
@@ -169,18 +162,6 @@ class InstallationOperationsReport extends Page implements HasForms, HasTable
                 TextColumn::make('installation_date')
                     ->label('تاريخ التركيب')
                     ->date()
-                    ->sortable(),
-                TextColumn::make('status')
-                    ->label('حالة التركيب')
-                    ->formatStateUsing(fn ($state) => InstallationStatusEnum::from($state)->label())
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'pending' => 'warning',
-                        'in_progress' => 'info',
-                        'completed' => 'success',
-                        'cancelled' => 'danger',
-                        default => 'gray',
-                    })
                     ->sortable(),
                 TextColumn::make('description')
                     ->label('كيفية الاستفادة')

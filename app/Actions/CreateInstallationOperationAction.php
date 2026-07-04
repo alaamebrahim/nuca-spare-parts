@@ -21,7 +21,6 @@ class CreateInstallationOperationAction
                 'installation_date' => $data->installation_date,
                 'description' => $data->description,
                 'notes' => $data->notes,
-                'status' => 'pending',
             ]);
         });
     }
