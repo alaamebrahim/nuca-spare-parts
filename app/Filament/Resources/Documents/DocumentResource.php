@@ -23,9 +23,10 @@ class DocumentResource extends Resource
     protected static ?string $recordTitleAttribute = 'description';
 
     protected static ?string $navigationLabel = 'المستندات';
-    protected static ?string $modelLabel = 'مستند';
-    protected static ?string $pluralModelLabel  = 'المستندات';
 
+    protected static ?string $modelLabel = 'مستند';
+
+    protected static ?string $pluralModelLabel = 'المستندات';
 
     public static function form(Schema $schema): Schema
     {

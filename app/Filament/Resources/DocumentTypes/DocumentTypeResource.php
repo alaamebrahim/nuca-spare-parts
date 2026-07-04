@@ -23,8 +23,10 @@ class DocumentTypeResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationLabel = 'أنواع المستندات';
+
     protected static ?string $modelLabel = 'نوع مستند';
-    protected static ?string $pluralModelLabel  = 'أنواع المستندات';
+
+    protected static ?string $pluralModelLabel = 'أنواع المستندات';
 
     public static function getNavigationGroup(): ?string
     {

@@ -3,20 +3,20 @@
 namespace App\Filament\Resources\SpareParts\Tables;
 
 use App\Enums\SparePartStatusEnum;
+use App\Models\City;
+use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
-use Filament\Actions\Action;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use App\Models\City;
 use Illuminate\Database\Eloquent\Builder;
 
 class SparePartsTable
@@ -37,6 +37,7 @@ class SparePartsTable
                     ->limit(30)
                     ->tooltip(function (TextColumn $column): ?string {
                         $state = $column->getState();
+
                         return strlen($state) > 30 ? $state : null;
                     }),
                 TextColumn::make('category.name')
@@ -67,7 +68,7 @@ class SparePartsTable
                         );
                     }),
                 TextColumn::make('status')
-                    ->formatStateUsing(fn($state) => SparePartStatusEnum::from($state)->label())
+                    ->formatStateUsing(fn ($state) => SparePartStatusEnum::from($state)->label())
                     ->alignCenter()
                     ->badge()
                     ->label('الحالة')
@@ -135,8 +136,8 @@ class SparePartsTable
                     ViewAction::make()
                         ->label('عرض التفاصيل')
                         ->modalHeading('تفاصيل قطع الغيار')
-                        ->modalContent(fn($record) => view('filament.resources.spare-parts.modals.details', [
-                            'record' => $record
+                        ->modalContent(fn ($record) => view('filament.resources.spare-parts.modals.details', [
+                            'record' => $record,
                         ]))
                         ->modalWidth('4xl')
                         ->schema([])
@@ -145,16 +146,16 @@ class SparePartsTable
                         ->label('نقل وتركيب')
                         ->icon('heroicon-o-wrench-screwdriver')
                         ->color('success')
-                        ->visible(fn($record) => $record->available_quantity > 0)
+                        ->visible(fn ($record) => $record->available_quantity > 0)
                         ->form([
                             TextInput::make('spare_part_info')
                                 ->label('معلومات القطعة')
                                 ->disabled()
-                                ->default(fn($record) => "نوع: {$record->type->name} | الفئة: {$record->category->name} | الكمية المتاحة: {$record->available_quantity}"),
+                                ->default(fn ($record) => "نوع: {$record->type->name} | الفئة: {$record->category->name} | الكمية المتاحة: {$record->available_quantity}"),
                             Select::make('examine_city_id')
                                 ->label('مدينة الفحص')
                                 ->options(City::pluck('name', 'id'))
-                                ->default(fn($record) => $record->city_id)
+                                ->default(fn ($record) => $record->city_id)
                                 ->disabled()
                                 ->dehydrated(false)
                                 ->required(),
@@ -169,7 +170,7 @@ class SparePartsTable
                                 ->numeric()
                                 ->required()
                                 ->minValue(1)
-                                ->maxValue(fn($record) => $record->available_quantity),
+                                ->maxValue(fn ($record) => $record->available_quantity),
                             DatePicker::make('installation_date')
                                 ->label('تاريخ التركيب')
                                 ->required(),
@@ -194,7 +195,7 @@ class SparePartsTable
                         ->modalHeading('نقل وتركيب قطع الغيار')
                         ->modalWidth('2xl'),
                     EditAction::make(),
-                ])
+                ]),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

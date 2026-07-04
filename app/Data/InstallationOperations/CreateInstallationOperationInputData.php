@@ -19,7 +19,5 @@ class CreateInstallationOperationInputData extends Data
         public string $installation_date,
         public ?string $description,
         public ?string $notes,
-    ) {
-    }
+    ) {}
 }
-

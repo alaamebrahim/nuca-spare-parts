@@ -32,7 +32,5 @@ class InstallationOperationsFilterData extends Data
         public ?array $spare_part_type_id,
         #[ArrayType]
         public ?array $spare_part_category_id,
-    ) {
-    }
+    ) {}
 }
-

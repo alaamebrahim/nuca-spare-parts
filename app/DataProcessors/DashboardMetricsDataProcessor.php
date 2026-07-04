@@ -5,7 +5,6 @@ namespace App\DataProcessors;
 use App\Enums\SparePartStatusEnum;
 use App\Models\InstallationOperation;
 use App\Models\SparePart;
-use Illuminate\Support\Facades\DB;
 
 class DashboardMetricsDataProcessor
 {

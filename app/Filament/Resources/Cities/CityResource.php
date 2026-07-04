@@ -23,8 +23,10 @@ class CityResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationLabel = 'قائمة المدن';
+
     protected static ?string $modelLabel = 'مدينة';
-    protected static ?string $pluralModelLabel  = 'المدن';
+
+    protected static ?string $pluralModelLabel = 'المدن';
 
     public static function getNavigationGroup(): ?string
     {

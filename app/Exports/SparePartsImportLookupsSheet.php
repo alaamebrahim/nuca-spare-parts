@@ -49,4 +49,3 @@ class SparePartsImportLookupsSheet implements FromArray, WithHeadings, WithTitle
         return $rows;
     }
 }
-

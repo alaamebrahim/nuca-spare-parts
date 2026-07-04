@@ -9,9 +9,8 @@ class SparePartsImportTemplateExport implements WithMultipleSheets
     public function sheets(): array
     {
         return [
-            new SparePartsImportTemplateSheet(),
-            new SparePartsImportLookupsSheet(),
+            new SparePartsImportTemplateSheet,
+            new SparePartsImportLookupsSheet,
         ];
     }
 }
-

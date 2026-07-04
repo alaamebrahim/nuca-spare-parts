@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
 
-class SparePartsImportTemplateSheet implements FromArray, WithHeadings, WithTitle, WithEvents
+class SparePartsImportTemplateSheet implements FromArray, WithEvents, WithHeadings, WithTitle
 {
     private const TEMPLATE_ROWS_WITH_VALIDATION = 300;
 
@@ -76,7 +76,7 @@ class SparePartsImportTemplateSheet implements FromArray, WithHeadings, WithTitl
         $lookupEnd = 2000;
         $formula = "Lookups!\${$lookupColumn}\${$lookupStart}:\${$lookupColumn}\${$lookupEnd}";
 
-        $validation = new DataValidation();
+        $validation = new DataValidation;
         $validation->setType(DataValidation::TYPE_LIST);
         $validation->setErrorStyle(DataValidation::STYLE_STOP);
         $validation->setAllowBlank($allowBlank);
@@ -95,4 +95,3 @@ class SparePartsImportTemplateSheet implements FromArray, WithHeadings, WithTitl
         }
     }
 }
-

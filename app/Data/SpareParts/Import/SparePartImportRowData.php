@@ -135,4 +135,3 @@ class SparePartImportRowData extends Data
         return $labelToValue[$status] ?? null;
     }
 }
-

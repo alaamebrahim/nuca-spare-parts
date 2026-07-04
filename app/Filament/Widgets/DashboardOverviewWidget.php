@@ -2,9 +2,9 @@
 
 namespace App\Filament\Widgets;
 
+use App\DataProcessors\DashboardMetricsDataProcessor;
 use Filament\Widgets\Widget;
 use Illuminate\Support\Carbon;
-use App\DataProcessors\DashboardMetricsDataProcessor;
 
 class DashboardOverviewWidget extends Widget
 {

@@ -13,6 +13,7 @@ class CreateInstallationOperationAction
     {
         return DB::transaction(function () use ($data) {
             $sparePart = SparePart::findOrFail($data->spare_part_id);
+
             return InstallationOperation::create([
                 'spare_part_id' => $sparePart->id,
                 'examine_city_id' => $sparePart->city_id,
@@ -25,4 +26,3 @@ class CreateInstallationOperationAction
         });
     }
 }
-

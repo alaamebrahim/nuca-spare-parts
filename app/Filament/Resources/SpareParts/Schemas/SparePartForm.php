@@ -59,6 +59,13 @@ class SparePartForm
                     ->numeric()
                     ->minValue(0)
                     ->default(0),
+                Select::make('maintenance_city_id')
+                    ->label('المدينة المنوطة بالصيانة')
+                    ->searchable()
+                    ->preload()
+                    ->relationship('maintenanceCity', 'name')
+                // ->visible(fn ($get): bool => $get('status') === SparePartStatusEnum::Maintained->value),
+                ,
                 Select::make('status')
                     ->label('الحالة')
                     ->required()
@@ -77,12 +84,6 @@ class SparePartForm
                     ->numeric()
                     ->minValue(0)
                     ->default(0)
-                    ->visible(fn ($get): bool => $get('status') === SparePartStatusEnum::Maintained->value),
-                Select::make('maintenance_city_id')
-                    ->label('المدينة المنوطة بالصيانة')
-                    ->searchable()
-                    ->preload()
-                    ->relationship('maintenanceCity', 'name')
                     ->visible(fn ($get): bool => $get('status') === SparePartStatusEnum::Maintained->value),
             ])->columnSpanFull(),
         ];

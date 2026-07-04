@@ -23,6 +23,7 @@ class SparePartsDataProcessor
         if ($cityId) {
             $query->where('city_id', $cityId);
         }
+
         return $query->get()->mapWithKeys(function (SparePart $sparePart) {
             return [$sparePart->id => self::labelForOption($sparePart)];
         });
@@ -38,4 +39,3 @@ class SparePartsDataProcessor
         return $sparePart->quantity * $sparePart->maintenance_cost;
     }
 }
-

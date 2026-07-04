@@ -21,7 +21,7 @@ class UsersTable
                 TextColumn::make('roles.name')->label('الصلاحية')->badge()->alignCenter(),
                 ToggleColumn::make('is_active')
                     ->label('مفعل')
-                    ->disabled(fn(User $record): bool => $record->hasRole('super_admin'))
+                    ->disabled(fn (User $record): bool => $record->hasRole('super_admin'))
                     ->alignCenter(),
             ])
             ->filters([

@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources\InstallationOperations;
 
-use App\Filament\Resources\InstallationOperations\Pages;
 use App\Models\InstallationOperation;
+use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Support\Icons\Heroicon;
-use BackedEnum;
 
 class InstallationOperationResource extends Resource
 {

@@ -3,16 +3,12 @@
 namespace App\Filament\Resources\InstallationOperations\Schemas;
 
 use App\Models\City;
-use App\Models\SparePart;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Wizard;
-use Filament\Forms\Components\Wizard\Step;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
-use Filament\Schemas\Schema;
-use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Wizard as ComponentsWizard;
+use Filament\Schemas\Schema;
 
 class InstallationOperationForm
 {
@@ -31,7 +27,7 @@ class InstallationOperationForm
                                 ->required()
                                 ->live()
                                 // Reset spare part when city changes to avoid invalid selection
-                                ->afterStateUpdated(fn($set) => $set('spare_part_id', null)),
+                                ->afterStateUpdated(fn ($set) => $set('spare_part_id', null)),
                         ]),
                     ComponentsWizard\Step::make('تفاصيل العملية')
                         ->schema([
@@ -39,6 +35,7 @@ class InstallationOperationForm
                                 ->label('قطعة الغيار')
                                 ->options(function ($get) {
                                     $cityId = $get('examine_city_id');
+
                                     return \App\DataProcessors\SparePartsDataProcessor::optionsForCity($cityId);
                                 })
                                 ->searchable()
@@ -55,7 +52,7 @@ class InstallationOperationForm
                                 ->numeric()
                                 ->required()
                                 ->minValue(1)
-                                ->maxValue(fn($get) => optional(\App\Models\SparePart::find($get('spare_part_id')))->available_quantity ?? null),
+                                ->maxValue(fn ($get) => optional(\App\Models\SparePart::find($get('spare_part_id')))->available_quantity ?? null),
                             DatePicker::make('installation_date')
                                 ->label('تاريخ التركيب')
                                 ->required(),
@@ -66,7 +63,7 @@ class InstallationOperationForm
                                 ->label('ملاحظات')
                                 ->rows(3),
                         ]),
-                ])->columnSpanFull()
+                ])->columnSpanFull(),
             ]);
     }
 }

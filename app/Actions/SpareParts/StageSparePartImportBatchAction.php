@@ -39,7 +39,7 @@ class StageSparePartImportBatchAction
 
                 $batch->rows()->delete();
 
-                $service = new SparePartExcelImportService();
+                $service = new SparePartExcelImportService;
                 $rows = $service->parse($filePath);
 
                 foreach ($rows as $row) {
@@ -161,4 +161,3 @@ class StageSparePartImportBatchAction
         return null;
     }
 }
-

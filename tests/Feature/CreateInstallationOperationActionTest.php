@@ -38,4 +38,3 @@ it('creates installation operation', function () {
         ->and($op->beneficiary_city_id)->toBe($beneficiaryCity->id)
         ->and($op->quantity)->toBe(2);
 });
-

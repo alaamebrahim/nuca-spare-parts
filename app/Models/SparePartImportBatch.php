@@ -24,4 +24,3 @@ class SparePartImportBatch extends Model
         return $this->hasMany(SparePartImportRow::class, 'batch_id');
     }
 }
-

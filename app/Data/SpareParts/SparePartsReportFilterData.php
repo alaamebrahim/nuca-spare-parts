@@ -2,7 +2,6 @@
 
 namespace App\Data\SpareParts;
 
-use App\Enums\SparePartStatusEnum;
 use Spatie\LaravelData\Attributes\Validation\ArrayType;
 use Spatie\LaravelData\Attributes\Validation\Date;
 use Spatie\LaravelData\Attributes\Validation\IntegerType;
@@ -37,7 +36,5 @@ class SparePartsReportFilterData extends Data
         public ?int $maintenance_cost_from,
         #[IntegerType]
         public ?int $maintenance_cost_to,
-    ) {
-    }
+    ) {}
 }
-

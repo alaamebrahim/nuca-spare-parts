@@ -63,4 +63,3 @@ class SparePartImportRow extends Model
         return $this->belongsTo(City::class, 'maintenance_city_id');
     }
 }
-

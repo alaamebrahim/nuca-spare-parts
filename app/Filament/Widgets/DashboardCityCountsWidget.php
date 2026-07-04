@@ -11,12 +11,15 @@ class DashboardCityCountsWidget extends Widget
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static null|int $sort = 3;
+    protected static ?int $sort = 3;
 
     // Reactive UI state
     public string $search = '';
+
     public string $sortBy = 'count_desc'; // options: count_desc, name_asc
+
     public bool $expanded = false;
+
     public int $perPage = 12; // default visible cards when collapsed
 
     protected function getViewData(): array

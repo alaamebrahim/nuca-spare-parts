@@ -23,8 +23,10 @@ class SparePartTypeResource extends Resource
     protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationLabel = 'أنواع المهمات';
+
     protected static ?string $modelLabel = 'نوع ';
-    protected static ?string $pluralModelLabel  = 'الأنواع';
+
+    protected static ?string $pluralModelLabel = 'الأنواع';
 
     public static function getNavigationGroup(): ?string
     {

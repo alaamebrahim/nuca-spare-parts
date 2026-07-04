@@ -4,8 +4,8 @@ namespace App\Services\SpareParts;
 
 use App\Data\SpareParts\Import\SparePartImportRowData;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 class SparePartExcelImportService
 {
@@ -34,7 +34,7 @@ class SparePartExcelImportService
         HeadingRowFormatter::default(HeadingRowFormatter::FORMATTER_NONE);
 
         try {
-            $sheets = Excel::toArray(new SparePartsExcelHeadingImport(), $filePath);
+            $sheets = Excel::toArray(new SparePartsExcelHeadingImport, $filePath);
         } finally {
             HeadingRowFormatter::reset();
         }
@@ -62,6 +62,7 @@ class SparePartExcelImportService
             $mapped = self::ARABIC_HEADER_MAP[$rawKey] ?? null;
             if ($mapped) {
                 $normalized[$mapped] = $value;
+
                 continue;
             }
 
@@ -72,4 +73,3 @@ class SparePartExcelImportService
         return $normalized;
     }
 }
-

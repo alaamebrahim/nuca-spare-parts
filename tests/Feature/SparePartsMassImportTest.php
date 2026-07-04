@@ -27,7 +27,7 @@ function makeSparePartsImportXlsx(array $rows): string
         'maintenance_city_name',
     ];
 
-    $spreadsheet = new Spreadsheet();
+    $spreadsheet = new Spreadsheet;
     $sheet = $spreadsheet->getActiveSheet();
     $sheet->fromArray([$headers, ...$rows], null, 'A1');
 
@@ -35,7 +35,7 @@ function makeSparePartsImportXlsx(array $rows): string
     if ($tmp === false) {
         throw new RuntimeException('Failed to create temp file.');
     }
-    $path = $tmp . '.xlsx';
+    $path = $tmp.'.xlsx';
 
     $writer = new Xlsx($spreadsheet);
     $writer->save($path);
@@ -126,4 +126,3 @@ it('saves only when rows are valid and does not create related records', functio
         ->and($sp->category_id)->toBe($category->id)
         ->and($sp->quantity)->toBe(2);
 });
-
