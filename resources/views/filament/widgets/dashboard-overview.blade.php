@@ -1,6 +1,6 @@
 <div class="dash-kpis" dir="rtl">
-    <section class="dash-panel" aria-labelledby="dash-group-ready">
-        <h2 id="dash-group-ready" class="dash-panel-title">
+    <section class="dash-group" aria-labelledby="dash-group-ready">
+        <h2 id="dash-group-ready" class="dash-group-title">
             المهمات التي لا تحتاج لصيانة أو تم عمل صيانة لها
         </h2>
 
@@ -31,8 +31,8 @@
         </div>
     </section>
 
-    <section class="dash-panel dash-panel-installed" aria-labelledby="dash-group-installed">
-        <h2 id="dash-group-installed" class="dash-panel-title">
+    <section class="dash-group" aria-labelledby="dash-group-installed">
+        <h2 id="dash-group-installed" class="dash-group-title">
             المهمات التي تم الاستفادة بها وتركيبها بالفعل
         </h2>
 
@@ -41,7 +41,7 @@
                 'label' => 'إجمالي التكلفة في حالة شراء جديد',
                 'value' => number_format(($installed['purchase_total'] ?? 0) / 1000000, 2),
                 'variant' => 'purchase',
-                'icon' => 'heroicon-o-banknotes',
+                'icon' => 'heroicon-o-cube',
                 'emphasized' => false,
             ])
 
@@ -63,21 +63,19 @@
         </div>
     </section>
 
-    <section class="dash-panel dash-panel-pending" aria-labelledby="dash-group-pending">
-        <div class="dash-pending">
-            <div class="dash-pending-copy">
-                <h2 id="dash-group-pending" class="dash-panel-title">
-                    المهمات بحاجة لفحص وصيانة
-                </h2>
-                <p class="dash-metric-label">إجمالي القيمة في حالة شراء جديد</p>
-            </div>
+    <section class="dash-group" aria-labelledby="dash-group-pending">
+        <h2 id="dash-group-pending" class="dash-group-title">
+            المهمات بحاجة لفحص وصيانة
+        </h2>
 
-            <div class="dash-pending-value">
-                <p class="dash-metric-value">
-                    {{ number_format(($needsMaintenance['purchase_total'] ?? 0) / 1000000, 2) }}
-                </p>
-                <p class="dash-metric-unit">مليون</p>
-            </div>
+        <div class="dash-metric-grid">
+            @include('filament.widgets.partials.kpi-metric', [
+                'label' => 'إجمالي القيمة في حالة شراء جديد',
+                'value' => number_format(($needsMaintenance['purchase_total'] ?? 0) / 1000000, 2),
+                'variant' => 'pending',
+                'icon' => 'heroicon-o-exclamation-triangle',
+                'emphasized' => false,
+            ])
         </div>
     </section>
 
