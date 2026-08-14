@@ -56,7 +56,7 @@
     "src": "public/fonts/Noto_Naskh_Arabic/static/NotoNaskhArabic-SemiBold.ttf"
   },
   "resources/css/app.css": {
-    "file": "assets/app-Dmf7uUY-.css",
+    "file": "assets/app-DQNu8tZj.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
@@ -64,7 +64,7 @@
     ]
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-Fpowt8i4.css",
+    "file": "assets/theme-GT-wFRJz.css",
     "src": "resources/css/filament/admin/theme.css",
     "isEntry": true,
     "names": [

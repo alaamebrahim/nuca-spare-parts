@@ -9,7 +9,11 @@ class DashboardCityCountsWidget extends Widget
 {
     protected string $view = 'filament.widgets.dashboard-city-counts';
 
-    protected int|string|array $columnSpan = 'full';
+    protected int|string|array $columnSpan = [
+        'default' => 'full',
+        'lg' => 12,
+        'xl' => 4,
+    ];
 
     protected static ?int $sort = 3;
 
@@ -53,6 +57,7 @@ class DashboardCityCountsWidget extends Widget
 
         $totalCities = $cityCounts->count();
         $totalParts = $cityCounts->sum('count');
+        $maxCount = max(1, (int) $cityCounts->max('count'));
 
         // Collapse to top N unless expanded or filtered by search (show all when searching)
         $visibleCounts = ($this->expanded || $this->search !== '')
@@ -64,6 +69,8 @@ class DashboardCityCountsWidget extends Widget
             'totalCities' => $totalCities,
             'totalParts' => $totalParts,
             'shownCount' => $visibleCounts->count(),
+            'maxCount' => $maxCount,
+            'hasSearch' => $this->search !== '',
         ];
     }
 }

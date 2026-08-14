@@ -1,118 +1,87 @@
-<div class="space-y-10" dir="rtl">
-
-    <!-- SECTION 1 -->
-    <section class="space-y-5">
-        <h3 class="text-center text-xl font-semibold text-gray-800">
+<div class="dash-kpis" dir="rtl">
+    <section class="dash-panel" aria-labelledby="dash-group-ready">
+        <h2 id="dash-group-ready" class="dash-panel-title">
             المهمات التي لا تحتاج لصيانة أو تم عمل صيانة لها
-        </h3>
+        </h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <!-- Card -->
-            <div class="stat-card">
-                <div class="stat-icon bg-blue-50 text-blue-600">
-                    <x-filament::icon icon="heroicon-o-currency-dollar" class="w-5 h-5" />
-                </div>
-                <div class="stat-content">
-                    <p class="stat-label">إجمالي التكلفة في حالة شراء جديد (بالمليون)</p>
-                    <p class="stat-value text-blue-600">
-                        {{ number_format(($noMaintenance['purchase_total'] ?? 0) / 1000000, 2) }}
-                    </p>
-                </div>
-            </div>
+        <div class="dash-metric-grid">
+            @include('filament.widgets.partials.kpi-metric', [
+                'label' => 'إجمالي التكلفة في حالة شراء جديد',
+                'value' => number_format(($noMaintenance['purchase_total'] ?? 0) / 1000000, 2),
+                'variant' => 'purchase',
+                'icon' => 'heroicon-o-banknotes',
+                'emphasized' => false,
+            ])
 
-            <div class="stat-card">
-                <div class="stat-icon bg-amber-50 text-amber-600">
-                    <x-filament::icon icon="heroicon-o-wrench" class="w-5 h-5" />
-                </div>
-                <div class="stat-content">
-                    <p class="stat-label">إجمالي تكاليف الصيانة (بالمليون)</p>
-                    <p class="stat-value text-amber-600">
-                        {{ number_format(($noMaintenance['maintenance_total'] ?? 0) / 1000000, 2) }}
-                    </p>
-                </div>
-            </div>
+            @include('filament.widgets.partials.kpi-metric', [
+                'label' => 'إجمالي تكاليف الصيانة',
+                'value' => number_format(($noMaintenance['maintenance_total'] ?? 0) / 1000000, 2),
+                'variant' => 'maintenance',
+                'icon' => 'heroicon-o-wrench',
+                'emphasized' => false,
+            ])
 
-            <div class="stat-card">
-                <div class="stat-icon bg-emerald-50 text-emerald-600">
-                    <x-filament::icon icon="heroicon-o-sparkles" class="w-5 h-5" />
-                </div>
-                <div class="stat-content">
-                    <p class="stat-label">التوفير (بالمليون)</p>
-                    <p class="stat-value text-emerald-600">
-                        {{ number_format(($noMaintenance['savings'] ?? 0) / 1000000, 2) }}
-                    </p>
-                </div>
-            </div>
+            @include('filament.widgets.partials.kpi-metric', [
+                'label' => 'التوفير',
+                'value' => number_format(($noMaintenance['savings'] ?? 0) / 1000000, 2),
+                'variant' => 'savings',
+                'icon' => 'heroicon-o-sparkles',
+                'emphasized' => true,
+            ])
         </div>
     </section>
 
-    <!-- SECTION 2 -->
-    <section class="space-y-5">
-        <h3 class="text-center text-xl font-semibold text-gray-800">
+    <section class="dash-panel dash-panel-installed" aria-labelledby="dash-group-installed">
+        <h2 id="dash-group-installed" class="dash-panel-title">
             المهمات التي تم الاستفادة بها وتركيبها بالفعل
-        </h3>
+        </h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <div class="stat-card">
-                <div class="stat-icon bg-blue-50 text-blue-600">
-                    <x-filament::icon icon="heroicon-o-currency-dollar" class="w-5 h-5" />
-                </div>
-                <div class="stat-content">
-                    <p class="stat-label">إجمالي التكلفة في حالة شراء جديد (بالمليون)</p>
-                    <p class="stat-value text-blue-600">
-                        {{ number_format(($installed['purchase_total'] ?? 0) / 1000000, 2) }}
-                    </p>
-                </div>
+        <div class="dash-metric-grid">
+            @include('filament.widgets.partials.kpi-metric', [
+                'label' => 'إجمالي التكلفة في حالة شراء جديد',
+                'value' => number_format(($installed['purchase_total'] ?? 0) / 1000000, 2),
+                'variant' => 'purchase',
+                'icon' => 'heroicon-o-banknotes',
+                'emphasized' => false,
+            ])
+
+            @include('filament.widgets.partials.kpi-metric', [
+                'label' => 'إجمالي تكاليف الصيانة',
+                'value' => number_format(($installed['maintenance_total'] ?? 0) / 1000000, 2),
+                'variant' => 'maintenance',
+                'icon' => 'heroicon-o-wrench-screwdriver',
+                'emphasized' => false,
+            ])
+
+            @include('filament.widgets.partials.kpi-metric', [
+                'label' => 'التوفير',
+                'value' => number_format(($installed['savings'] ?? 0) / 1000000, 2),
+                'variant' => 'savings',
+                'icon' => 'heroicon-o-chart-bar',
+                'emphasized' => true,
+            ])
+        </div>
+    </section>
+
+    <section class="dash-panel dash-panel-pending" aria-labelledby="dash-group-pending">
+        <div class="dash-pending">
+            <div class="dash-pending-copy">
+                <h2 id="dash-group-pending" class="dash-panel-title">
+                    المهمات بحاجة لفحص وصيانة
+                </h2>
+                <p class="dash-metric-label">إجمالي القيمة في حالة شراء جديد</p>
             </div>
 
-            <div class="stat-card">
-                <div class="stat-icon bg-amber-50 text-amber-600">
-                    <x-filament::icon icon="heroicon-o-wrench-screwdriver" class="w-5 h-5" />
-                </div>
-                <div class="stat-content">
-                    <p class="stat-label">إجمالي تكاليف الصيانة (بالمليون)</p>
-                    <p class="stat-value text-amber-600">
-                        {{ number_format(($installed['maintenance_total'] ?? 0) / 1000000, 2) }}
-                    </p>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon bg-emerald-50 text-emerald-600">
-                    <x-filament::icon icon="heroicon-o-chart-bar" class="w-5 h-5" />
-                </div>
-                <div class="stat-content">
-                    <p class="stat-label">التوفير (بالمليون)</p>
-                    <p class="stat-value text-emerald-600">
-                        {{ number_format(($installed['savings'] ?? 0) / 1000000, 2) }}
-                    </p>
-                </div>
+            <div class="dash-pending-value">
+                <p class="dash-metric-value">
+                    {{ number_format(($needsMaintenance['purchase_total'] ?? 0) / 1000000, 2) }}
+                </p>
+                <p class="dash-metric-unit">مليون</p>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 3 -->
-    <section class="space-y-5">
-        <h3 class="text-center text-xl font-semibold text-gray-800">
-            المهمات بحاجة لفحص وصيانة
-        </h3>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <div class="stat-card ">
-                <div class="stat-icon bg-blue-50 text-blue-600">
-                    <x-filament::icon icon="heroicon-o-currency-dollar" class="w-5 h-5" />
-                </div>
-                <div class="stat-content">
-                    <p class="stat-label">إجمالي القيمة في حالة شراء جديد (بالمليون)</p>
-                    <p class="stat-value text-blue-600">
-                        {{ number_format(($needsMaintenance['purchase_total'] ?? 0) / 1000000, 2) }}
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <p class="text-center text-xs text-gray-500">
-            آخر تحديث {{ $now->translatedFormat('Y-m-d H:i') }}
-        </p>
-    </section>
+    <p class="dash-updated">
+        آخر تحديث {{ $now->translatedFormat('Y-m-d H:i') }}
+    </p>
 </div>

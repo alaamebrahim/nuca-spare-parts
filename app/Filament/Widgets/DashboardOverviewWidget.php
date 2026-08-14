@@ -10,7 +10,13 @@ class DashboardOverviewWidget extends Widget
 {
     protected string $view = 'filament.widgets.dashboard-overview';
 
-    protected int|string|array $columnSpan = 'full';
+    protected static ?int $sort = 2;
+
+    protected int|string|array $columnSpan = [
+        'default' => 'full',
+        'lg' => 12,
+        'xl' => 8,
+    ];
 
     protected function getViewData(): array
     {
