@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SpareParts\Tables;
 
 use App\Enums\SparePartStatusEnum;
 use App\Models\City;
+use App\Traits\SparePartsBaseQueries;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -25,6 +26,10 @@ class SparePartsTable
     {
         return $table
             ->modifyQueryUsing(fn (Builder $query) => $query->withInstallationQuantities())
+            ->searchable()
+            ->searchUsing(function (Builder $query, string $search): void {
+                SparePartsBaseQueries::applySearch($query, $search);
+            })
             ->columns([
                 TextColumn::make('type.name')
                     ->alignCenter()
@@ -77,7 +82,7 @@ class SparePartsTable
                 TextColumn::make('city.name')
                     ->label('المدينة التي تم الفحص بها')
                     ->alignCenter()
-                    ->numeric()
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('estimated_cost')
                     ->label('التكلفة التقديرية للوحدة')

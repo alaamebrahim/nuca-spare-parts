@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Data\SpareParts\SparePartsReportFilterData;
+use App\Enums\SparePartStatusEnum;
 use App\Models\SparePart;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -14,6 +15,42 @@ trait SparePartsBaseQueries
     public static function baseQuery(): Builder
     {
         return SparePart::query()->with(['city', 'type', 'category', 'maintenanceCity']);
+    }
+
+    public static function applySearch(Builder $query, ?string $search): Builder
+    {
+        if (blank($search)) {
+            return $query;
+        }
+
+        $term = '%'.$search.'%';
+
+        return $query->where(function (Builder $query) use ($search, $term): void {
+            $query
+                ->where('spare_parts.technical_description', 'like', $term)
+                ->orWhere('spare_parts.location', 'like', $term)
+                ->orWhere('spare_parts.quantity', 'like', $term)
+                ->orWhere('spare_parts.status', 'like', $term)
+                ->orWhere('spare_parts.estimated_cost', 'like', $term)
+                ->orWhere('spare_parts.maintenance_cost', 'like', $term)
+                ->orWhereRelation('city', 'name', 'like', $term)
+                ->orWhereRelation('type', 'name', 'like', $term)
+                ->orWhereRelation('category', 'name', 'like', $term)
+                ->orWhereRelation('maintenanceCity', 'name', 'like', $term);
+
+            $matchingStatuses = array_values(array_filter(
+                SparePartStatusEnum::cases(),
+                fn (SparePartStatusEnum $status): bool => str_contains($status->label(), $search)
+                    || str_contains(mb_strtolower($status->value), mb_strtolower($search)),
+            ));
+
+            if ($matchingStatuses !== []) {
+                $query->orWhereIn(
+                    'spare_parts.status',
+                    array_map(fn (SparePartStatusEnum $status): string => $status->value, $matchingStatuses),
+                );
+            }
+        });
     }
 
     public static function filtered(SparePartsReportFilterData $filters): Builder
