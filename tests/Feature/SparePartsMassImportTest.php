@@ -126,3 +126,76 @@ it('saves only when rows are valid and does not create related records', functio
         ->and($sp->category_id)->toBe($category->id)
         ->and($sp->quantity)->toBe(2);
 });
+
+it('rejects maintenance cost when status is used and needs maintenance', function () {
+    City::create(['name' => 'القاهرة']);
+    SparePartType::create(['name' => 'نوع موجود']);
+    SparePartCategory::create(['name' => 'فئة موجودة']);
+
+    $path = makeSparePartsImportXlsx([
+        [
+            'القاهرة',
+            'نوع موجود',
+            'فئة موجودة',
+            'مكان',
+            'وصف',
+            1,
+            SparePartStatusEnum::UsedNeedsMaintainance->value,
+            10,
+            50,
+            null,
+        ],
+    ]);
+
+    $batch = StageSparePartImportBatchAction::run(
+        filePath: $path,
+        originalFilename: 'test.xlsx',
+        userId: null,
+    );
+
+    $row = SparePartImportRow::query()->where('batch_id', $batch->id)->firstOrFail();
+
+    expect($row->has_errors)->toBeTrue()
+        ->and($row->errors)->toHaveKey('maintenance_cost');
+
+    expect(fn () => SaveSparePartImportBatchAction::run($batch->id))
+        ->toThrow(RuntimeException::class);
+
+    expect(SparePart::count())->toBe(0);
+});
+
+it('allows zero maintenance cost when status is used and needs maintenance', function () {
+    City::create(['name' => 'القاهرة']);
+    SparePartType::create(['name' => 'نوع موجود']);
+    SparePartCategory::create(['name' => 'فئة موجودة']);
+
+    $path = makeSparePartsImportXlsx([
+        [
+            'القاهرة',
+            'نوع موجود',
+            'فئة موجودة',
+            'مكان',
+            'وصف',
+            1,
+            SparePartStatusEnum::UsedNeedsMaintainance->value,
+            10,
+            0,
+            null,
+        ],
+    ]);
+
+    $batch = StageSparePartImportBatchAction::run(
+        filePath: $path,
+        originalFilename: 'test.xlsx',
+        userId: null,
+    );
+
+    $row = SparePartImportRow::query()->where('batch_id', $batch->id)->firstOrFail();
+
+    expect($row->has_errors)->toBeFalse();
+
+    $createdCount = SaveSparePartImportBatchAction::run($batch->id);
+
+    expect($createdCount)->toBe(1)
+        ->and(SparePart::count())->toBe(1);
+});

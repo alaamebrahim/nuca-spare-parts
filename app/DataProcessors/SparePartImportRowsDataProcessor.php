@@ -53,6 +53,12 @@ class SparePartImportRowsDataProcessor
             unset($errors['maintenance_city_name']);
         }
 
+        if ($row->status === SparePartStatusEnum::UsedNeedsMaintainance->value && (float) $row->maintenance_cost > 0) {
+            $errors['maintenance_cost'] ??= 'لا يجوز إدخال تكلفة صيانة عندما تكون الحالة مستعمل بحاجة للصيانة';
+        } else {
+            unset($errors['maintenance_cost']);
+        }
+
         $row->forceFill([
             'errors' => empty($errors) ? null : $errors,
             'has_errors' => ! empty($errors),

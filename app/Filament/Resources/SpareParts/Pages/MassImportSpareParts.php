@@ -236,6 +236,10 @@ class MassImportSpareParts extends Page implements HasForms, HasTable
                 TextColumn::make('status')
                     ->label('الحالة')
                     ->extraAttributes(fn (SparePartImportRow $record): array => $record->errors['status'] ?? null ? ['class' => 'import-cell-error'] : []),
+                TextColumn::make('maintenance_cost')
+                    ->label('تكلفة الصيانة')
+                    ->tooltip(fn (SparePartImportRow $record): ?string => $record->errors['maintenance_cost'] ?? null)
+                    ->extraAttributes(fn (SparePartImportRow $record): array => $record->errors['maintenance_cost'] ?? null ? ['class' => 'import-cell-error'] : []),
                 TextColumn::make('maintenance_city_name_raw')
                     ->label('مدينة الصيانة (بالملف)')
                     ->extraAttributes(fn (SparePartImportRow $record): array => $record->errors['maintenance_city_name'] ?? null ? ['class' => 'import-cell-error'] : []),

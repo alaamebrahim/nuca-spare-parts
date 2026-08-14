@@ -62,6 +62,10 @@ class SparePartImportRowData extends Data
             $errors['maintenance_city_name'] = 'مدينة الصيانة مطلوبة عند اختيار حالة الصيانة';
         }
 
+        if (($status === SparePartStatusEnum::UsedNeedsMaintainance->value) && $maintenanceCost > 0) {
+            $errors['maintenance_cost'] = 'لا يجوز إدخال تكلفة صيانة عندما تكون الحالة مستعمل بحاجة للصيانة';
+        }
+
         return new self(
             city_name: $cityName,
             type_name: $typeName,
