@@ -1,4 +1,38 @@
 <div class="dash-kpis" dir="rtl">
+    <section class="dash-group dash-group-pair" aria-label="ملخص الفحص">
+        <div class="dash-group-column">
+            <h2 id="dash-group-inspected" class="dash-group-title">
+                إجمالي ما تم فحصه
+            </h2>
+
+            <div class="dash-metric-grid dash-metric-grid--single">
+                @include('filament.widgets.partials.kpi-metric', [
+                    'label' => 'إجمالي التكلفة في حالة شراء جديد',
+                    'value' => number_format(($inspected['purchase_total'] ?? 0) / 1000000, 2),
+                    'variant' => 'purchase',
+                    'icon' => 'heroicon-o-clipboard-document-check',
+                    'emphasized' => true,
+                ])
+            </div>
+        </div>
+
+        <div class="dash-group-column">
+            <h2 id="dash-group-pending" class="dash-group-title">
+                المهمات بحاجة لفحص وصيانة
+            </h2>
+
+            <div class="dash-metric-grid dash-metric-grid--single">
+                @include('filament.widgets.partials.kpi-metric', [
+                    'label' => 'إجمالي القيمة في حالة شراء جديد',
+                    'value' => number_format(($needsMaintenance['purchase_total'] ?? 0) / 1000000, 2),
+                    'variant' => 'pending',
+                    'icon' => 'heroicon-o-exclamation-triangle',
+                    'emphasized' => false,
+                ])
+            </div>
+        </div>
+    </section>
+
     <section class="dash-group" aria-labelledby="dash-group-ready">
         <h2 id="dash-group-ready" class="dash-group-title">
             المهمات التي لا تحتاج لصيانة أو تم عمل صيانة لها
@@ -59,22 +93,6 @@
                 'variant' => 'savings',
                 'icon' => 'heroicon-o-chart-bar',
                 'emphasized' => true,
-            ])
-        </div>
-    </section>
-
-    <section class="dash-group" aria-labelledby="dash-group-pending">
-        <h2 id="dash-group-pending" class="dash-group-title">
-            المهمات بحاجة لفحص وصيانة
-        </h2>
-
-        <div class="dash-metric-grid">
-            @include('filament.widgets.partials.kpi-metric', [
-                'label' => 'إجمالي القيمة في حالة شراء جديد',
-                'value' => number_format(($needsMaintenance['purchase_total'] ?? 0) / 1000000, 2),
-                'variant' => 'pending',
-                'icon' => 'heroicon-o-exclamation-triangle',
-                'emphasized' => false,
             ])
         </div>
     </section>

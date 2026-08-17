@@ -4,6 +4,9 @@ use Illuminate\Support\Carbon;
 
 it('renders existing dashboard kpi values in millions', function () {
     $html = view('filament.widgets.dashboard-overview', [
+        'inspected' => [
+            'purchase_total' => 1_463_000_000,
+        ],
         'noMaintenance' => [
             'purchase_total' => 1_061_440_000,
             'maintenance_total' => 4_780_000,
@@ -21,6 +24,7 @@ it('renders existing dashboard kpi values in millions', function () {
     ])->render();
 
     expect($html)
+        ->toContain('إجمالي ما تم فحصه')
         ->toContain('المهمات التي لا تحتاج لصيانة أو تم عمل صيانة لها')
         ->toContain('المهمات التي تم الاستفادة بها وتركيبها بالفعل')
         ->toContain('المهمات بحاجة لفحص وصيانة')
@@ -28,6 +32,7 @@ it('renders existing dashboard kpi values in millions', function () {
         ->toContain('إجمالي تكاليف الصيانة')
         ->toContain('التوفير')
         ->toContain('إجمالي القيمة في حالة شراء جديد')
+        ->toContain('1,463.00')
         ->toContain('1,061.44')
         ->toContain('4.78')
         ->toContain('1,056.67')

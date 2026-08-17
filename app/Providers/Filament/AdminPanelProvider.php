@@ -38,8 +38,8 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(URL::to('img/logo.png'))
             ->login()
             ->colors([
-                'primary' => Color::hex('#546024'),
-                'secondary' => Color::hex('#C89A26'),
+                'primary' => Color::hex('#0EA5E9'),
+                'secondary' => Color::hex('#EBC53E'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

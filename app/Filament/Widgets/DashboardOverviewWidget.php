@@ -23,6 +23,7 @@ class DashboardOverviewWidget extends Widget
         $now = Carbon::now();
 
         return [
+            'inspected' => DashboardMetricsDataProcessor::inspectedTotals(),
             'noMaintenance' => DashboardMetricsDataProcessor::noMaintenanceTotals(),
             'installed' => DashboardMetricsDataProcessor::installedTotals(),
             'needsMaintenance' => DashboardMetricsDataProcessor::needsMaintenanceTotals(),

@@ -61,4 +61,14 @@ class DashboardMetricsDataProcessor
             'purchase_total' => (float) ($row->purchase_total ?? 0),
         ];
     }
+
+    public static function inspectedTotals(): array
+    {
+        $noMaintenance = self::noMaintenanceTotals();
+        $needsMaintenance = self::needsMaintenanceTotals();
+
+        return [
+            'purchase_total' => $noMaintenance['purchase_total'] + $needsMaintenance['purchase_total'],
+        ];
+    }
 }
