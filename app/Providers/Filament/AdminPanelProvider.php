@@ -32,6 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->spa()
             ->darkMode(false)
+            ->globalSearch(false)
             ->brandName('متابعة بيانات المهمات')
             ->brandLogo(URL::to('img/logo3.png'))
             ->favicon(URL::to('img/logo.png'))
